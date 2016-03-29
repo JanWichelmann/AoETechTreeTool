@@ -16,7 +16,7 @@ namespace AoETechTreeTool
 		/// <summary>
 		/// The edited DAT file.
 		/// </summary>
-		private GenieLibrary.GenieFile _datFile =null;
+		private GenieLibrary.GenieFile _datFile = null;
 
 		// The language DLL handles
 		private GenieLibrary.LanguageFileWrapper _langDllWrapper = null;
@@ -34,11 +34,83 @@ namespace AoETechTreeTool
 			InitializeComponent();
 		}
 
-		// Rebuilds the tree in the tree view from the DAT data.
+		/// <summary>
+		/// Rebuilds the tree in the tree view from the DAT data.
+		/// </summary>
 		private void RefillTreeView()
 		{
-			// Is the new tech tree structure used?
-			if(_datFile==null || _datFile)
+			// Prevent annyoing errors
+			if(_datFile == null)
+				return;
+
+			// Initialize structures
+			if(!_datFile.NewTechTree || _datFile.TechTreeNew == null)
+			{
+				// Set variables
+				_datFile.NewTechTree = true;
+				_datFile.TechTreeNew = new GenieLibrary.DataElements.TechTreeNew() { ParentElements = new List<GenieLibrary.DataElements.TechTreeNew.TechTreeElement>() };
+			}
+
+			// Run recursively through elements and create nodes
+			Func<GenieLibrary.DataElements.TechTreeNew.TechTreeElement, TreeNode> recursiveTreeViewFill = null;
+			recursiveTreeViewFill = (element) =>
+			  {
+				  // Create node
+				  TreeNode elementNode = new TreeNode(GetElementName(element));
+				  elementNode.Tag = element;
+
+				  // Run through children
+				  foreach(var currChild in element.Children)
+					  elementNode.Nodes.Add(recursiveTreeViewFill(currChild));
+				  return elementNode;
+			  };
+
+			// Catch errors
+			try
+			{
+				// Run recursion starting at root elements
+				_treeView.SuspendLayout();
+				foreach(var currChild in _datFile.TechTreeNew.ParentElements)
+					_treeView.Nodes.Add(recursiveTreeViewFill(currChild));
+				_treeView.ExpandAll();
+				_treeView.ResumeLayout();
+			}
+			catch(Exception ex)
+			{
+				// Message
+				MessageBox.Show("Error rendering tree data: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+				return;
+			}
+		}
+
+		/// <summary>
+		/// Returns the name of the given tech tree element.
+		/// </summary>
+		/// <param name="element">The element.</param>
+		/// <returns></returns>
+		private string GetElementName(GenieLibrary.DataElements.TechTreeNew.TechTreeElement element)
+		{
+			// Switch by type
+			if(element.ElementType == GenieLibrary.DataElements.TechTreeNew.TechTreeElement.ItemType.Research)
+			{
+				// Check for existence
+				if(_datFile.Researches.Count <= element.ElementObjectID || element.ElementObjectID < 0)
+					return "INVALID ID";
+				string result = _langDllWrapper.GetString(_datFile.Researches[element.ElementObjectID].LanguageDLLName1);
+				if(result == "")
+					return _datFile.Researches[element.ElementObjectID].Name;
+				return result;
+			}
+			else
+			{
+				// Check for existence
+				if(!_datFile.Civs[0].Units.ContainsKey(element.ElementObjectID))
+					return "INVALID ID";
+				string result = _langDllWrapper.GetString(_datFile.Civs[0].Units[element.ElementObjectID].LanguageDLLName);
+				if(result == "")
+					return _datFile.Civs[0].Units[element.ElementObjectID].Name1;
+				return result;
+			}
 		}
 
 		#endregion
@@ -55,12 +127,13 @@ namespace AoETechTreeTool
 			try
 			{
 				// Open
-				_datFile = new GenieLibrary.GenieFile(_openDatFileDialog.FileName);
+				IORAMHelper.RAMBuffer compressedFile = new IORAMHelper.RAMBuffer(_openDatFileDialog.FileName);
+				_datFile = new GenieLibrary.GenieFile(GenieLibrary.GenieFile.DecompressData(compressedFile));
 			}
 			catch(Exception ex)
 			{
 				// Message
-				MessageBox.Show("Error loading DAT file: " + ex.Message,"Error",MessageBoxButtons.OK,MessageBoxIcon.Error);
+				MessageBox.Show("Error loading DAT file: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
 				return;
 			}
 
@@ -73,7 +146,7 @@ namespace AoETechTreeTool
 			{
 				// Open
 				_langDllWrapper = new GenieLibrary.LanguageFileWrapper(_openLangDllDialog.FileNames);
-            }
+			}
 			catch(Exception ex)
 			{
 				// Message
@@ -86,6 +159,9 @@ namespace AoETechTreeTool
 			_exportTreeButton.Enabled = true;
 			_importTreeButton.Enabled = true;
 			_treeGroupBox.Enabled = true;
+
+			// Update tree view
+			RefillTreeView();
 		}
 
 		private void _saveDataButton_Click(object sender, EventArgs e)

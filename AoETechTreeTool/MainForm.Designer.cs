@@ -29,7 +29,7 @@
 		private void InitializeComponent()
 		{
 			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
-			this.treeView1 = new System.Windows.Forms.TreeView();
+			this._treeView = new System.Windows.Forms.TreeView();
 			this._loadDataButton = new System.Windows.Forms.Button();
 			this._saveDataButton = new System.Windows.Forms.Button();
 			this._exportTreeButton = new System.Windows.Forms.Button();
@@ -48,13 +48,13 @@
 			this.panel1.SuspendLayout();
 			this.SuspendLayout();
 			// 
-			// treeView1
+			// _treeView
 			// 
-			this.treeView1.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.treeView1.Location = new System.Drawing.Point(3, 16);
-			this.treeView1.Name = "treeView1";
-			this.treeView1.Size = new System.Drawing.Size(609, 528);
-			this.treeView1.TabIndex = 0;
+			this._treeView.Dock = System.Windows.Forms.DockStyle.Fill;
+			this._treeView.Location = new System.Drawing.Point(3, 16);
+			this._treeView.Name = "_treeView";
+			this._treeView.Size = new System.Drawing.Size(609, 528);
+			this._treeView.TabIndex = 0;
 			// 
 			// _loadDataButton
 			// 
@@ -101,7 +101,7 @@
 			// 
 			// _treeGroupBox
 			// 
-			this._treeGroupBox.Controls.Add(this.treeView1);
+			this._treeGroupBox.Controls.Add(this._treeView);
 			this._treeGroupBox.Controls.Add(this.panel2);
 			this._treeGroupBox.Dock = System.Windows.Forms.DockStyle.Fill;
 			this._treeGroupBox.Enabled = false;
@@ -208,7 +208,7 @@
 
 		#endregion
 
-		private System.Windows.Forms.TreeView treeView1;
+		private System.Windows.Forms.TreeView _treeView;
 		private System.Windows.Forms.Button _loadDataButton;
 		private System.Windows.Forms.Button _saveDataButton;
 		private System.Windows.Forms.Button _exportTreeButton;
