@@ -1,0 +1,6 @@
+[submodule "GenieLibrary"]
+	path = GenieLibrary
+	url = git@github.com:Janworks/GenieLibrary.git
+[submodule "IORAMHelper"]
+	path = IORAMHelper
+	url = git@github.com:Janworks/IORAMHelper.git
