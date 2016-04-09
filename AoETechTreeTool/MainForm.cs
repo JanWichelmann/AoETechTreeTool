@@ -1,13 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Windows.Forms;
-using GenieLibrary;
+﻿using GenieLibrary;
 using GenieLibrary.DataElements;
+using System;
+using System.Collections.Generic;
+using System.Drawing;
+using System.Windows.Forms;
 
 namespace AoETechTreeTool
 {
@@ -18,9 +14,9 @@ namespace AoETechTreeTool
 		/// <summary>
 		/// The age image font.
 		/// </summary>
-		Font AGE_FONT = new Font("Cambria", 10, FontStyle.Bold);
+		private Font AGE_FONT = new Font("Cambria", 10, FontStyle.Bold);
 
-		#endregion
+		#endregion Constants
 
 		#region Variables
 
@@ -44,7 +40,7 @@ namespace AoETechTreeTool
 		/// </summary>
 		private TechTreeNew.TechTreeElement _selectedElement = null;
 
-		#endregion
+		#endregion Variables
 
 		#region Functions
 
@@ -281,7 +277,7 @@ namespace AoETechTreeTool
 			}
 		}
 
-		#endregion
+		#endregion Functions
 
 		#region Event handlers
 
@@ -487,6 +483,7 @@ namespace AoETechTreeTool
 			newNode.Tag = newElement;
 
 			// Node selected?
+			_treeView.SuspendLayout();
 			if(_treeView.SelectedNode == null || ModifierKeys.HasFlag(Keys.Shift))
 			{
 				// New parent element
@@ -501,6 +498,7 @@ namespace AoETechTreeTool
 				_treeView.SelectedNode.Nodes.Add(newNode);
 			}
 			_treeView.Select();
+			_treeView.ResumeLayout();
 		}
 
 		private void _entryDeleteButton_Click(object sender, EventArgs e)
@@ -514,6 +512,7 @@ namespace AoETechTreeTool
 			if(MessageBox.Show("Really delete this node and all its children?", "Delete node", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) == DialogResult.Yes)
 			{
 				// Delete node
+				_treeView.SuspendLayout();
 				if(selNode.Parent == null)
 				{
 					// Select next or previous node
@@ -542,6 +541,7 @@ namespace AoETechTreeTool
 				}
 			}
 			_treeView.Select();
+			_treeView.ResumeLayout();
 		}
 
 		private void _entryUpButton_Click(object sender, EventArgs e)
@@ -557,6 +557,7 @@ namespace AoETechTreeTool
 				return;
 
 			// Swap nodes
+			_treeView.SuspendLayout();
 			TreeNode parentNode = selNode.Parent;
 			if(parentNode == null)
 			{
@@ -572,6 +573,7 @@ namespace AoETechTreeTool
 			}
 			_treeView.SelectedNode = selNode;
 			_treeView.Select();
+			_treeView.ResumeLayout();
 		}
 
 		private void _entryDownButton_Click(object sender, EventArgs e)
@@ -587,6 +589,7 @@ namespace AoETechTreeTool
 				return;
 
 			// Swap nodes
+			_treeView.SuspendLayout();
 			TreeNode parentNode = selNode.Parent;
 			if(parentNode == null)
 			{
@@ -602,8 +605,8 @@ namespace AoETechTreeTool
 			}
 			_treeView.SelectedNode = selNode;
 			_treeView.Select();
+			_treeView.ResumeLayout();
 		}
-
 
 		private void _treeView_AfterCollapse(object sender, TreeViewEventArgs e)
 		{
@@ -693,7 +696,7 @@ namespace AoETechTreeTool
 				// Set age
 				((TechTreeNew.TechTreeElement)node.Tag).Age = Math.Max(((TechTreeNew.TechTreeElement)node.Tag).Age, _selectedElement.Age);
 
-				// Update display 
+				// Update display
 				UpdateNodeDisplay(node);
 
 				// Update children
@@ -806,7 +809,7 @@ namespace AoETechTreeTool
 							// Set age
 							((TechTreeNew.TechTreeElement)node.Tag).Age = Math.Max(((TechTreeNew.TechTreeElement)node.Tag).Age, ((TechTreeNew.TechTreeElement)destNode.Tag).Age);
 
-							// Update display 
+							// Update display
 							UpdateNodeDisplay(node);
 
 							// Update children
@@ -868,6 +871,6 @@ namespace AoETechTreeTool
 			_requirementsView_CellEndEdit(sender, null);
 		}
 
-		#endregion
+		#endregion Event handlers
 	}
 }
