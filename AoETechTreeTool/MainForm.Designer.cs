@@ -37,6 +37,9 @@
 			this._treeGroupBox = new System.Windows.Forms.GroupBox();
 			this._editPanel = new System.Windows.Forms.Panel();
 			this._requirementsGroupBox = new System.Windows.Forms.GroupBox();
+			this._requirementsView = new System.Windows.Forms.DataGridView();
+			this._requirementsViewTypeColumn = new System.Windows.Forms.DataGridViewComboBoxColumn();
+			this._requirementsViewIdColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this._civsGroupBox = new System.Windows.Forms.GroupBox();
 			this._civsInvertButton = new System.Windows.Forms.Button();
 			this._civsNoneButton = new System.Windows.Forms.Button();
@@ -63,19 +66,16 @@
 			this._saveDatFileDialog = new System.Windows.Forms.SaveFileDialog();
 			this._openTechTreeDialog = new System.Windows.Forms.OpenFileDialog();
 			this._saveTechTreeDialog = new System.Windows.Forms.SaveFileDialog();
-			this._requirementsView = new System.Windows.Forms.DataGridView();
-			this._requirementsViewTypeColumn = new System.Windows.Forms.DataGridViewComboBoxColumn();
-			this._requirementsViewIdColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
 			this._treeGroupBox.SuspendLayout();
 			this._editPanel.SuspendLayout();
 			this._requirementsGroupBox.SuspendLayout();
+			((System.ComponentModel.ISupportInitialize)(this._requirementsView)).BeginInit();
 			this._civsGroupBox.SuspendLayout();
 			this._renderModeGroupBox.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this._idField)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this._ageField)).BeginInit();
 			this._elementTypeGroupBox.SuspendLayout();
 			this._menuPanel.SuspendLayout();
-			((System.ComponentModel.ISupportInitialize)(this._requirementsView)).BeginInit();
 			this.SuspendLayout();
 			// 
 			// _treeView
@@ -180,6 +180,35 @@
 			this._requirementsGroupBox.TabIndex = 16;
 			this._requirementsGroupBox.TabStop = false;
 			this._requirementsGroupBox.Text = "Requirements";
+			// 
+			// _requirementsView
+			// 
+			this._requirementsView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+			this._requirementsView.ColumnHeadersVisible = false;
+			this._requirementsView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this._requirementsViewTypeColumn,
+            this._requirementsViewIdColumn});
+			this._requirementsView.Dock = System.Windows.Forms.DockStyle.Fill;
+			this._requirementsView.Location = new System.Drawing.Point(3, 16);
+			this._requirementsView.Name = "_requirementsView";
+			this._requirementsView.Size = new System.Drawing.Size(212, 61);
+			this._requirementsView.TabIndex = 0;
+			this._requirementsView.CellEndEdit += new System.Windows.Forms.DataGridViewCellEventHandler(this._requirementsView_CellEndEdit);
+			this._requirementsView.RowsRemoved += new System.Windows.Forms.DataGridViewRowsRemovedEventHandler(this._requirementsView_RowsRemoved);
+			// 
+			// _requirementsViewTypeColumn
+			// 
+			this._requirementsViewTypeColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+			this._requirementsViewTypeColumn.FillWeight = 70F;
+			this._requirementsViewTypeColumn.HeaderText = "Type";
+			this._requirementsViewTypeColumn.Name = "_requirementsViewTypeColumn";
+			// 
+			// _requirementsViewIdColumn
+			// 
+			this._requirementsViewIdColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+			this._requirementsViewIdColumn.FillWeight = 30F;
+			this._requirementsViewIdColumn.HeaderText = "ID";
+			this._requirementsViewIdColumn.Name = "_requirementsViewIdColumn";
 			// 
 			// _civsGroupBox
 			// 
@@ -443,35 +472,6 @@
 			this._saveTechTreeDialog.Filter = "(*.ntt)|*.ntt";
 			this._saveTechTreeDialog.Title = "Specify exported tech tree destination file...";
 			// 
-			// _requirementsView
-			// 
-			this._requirementsView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-			this._requirementsView.ColumnHeadersVisible = false;
-			this._requirementsView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this._requirementsViewTypeColumn,
-            this._requirementsViewIdColumn});
-			this._requirementsView.Dock = System.Windows.Forms.DockStyle.Fill;
-			this._requirementsView.Location = new System.Drawing.Point(3, 16);
-			this._requirementsView.Name = "_requirementsView";
-			this._requirementsView.Size = new System.Drawing.Size(212, 61);
-			this._requirementsView.TabIndex = 0;
-			this._requirementsView.CellEndEdit += new System.Windows.Forms.DataGridViewCellEventHandler(this._requirementsView_CellEndEdit);
-			this._requirementsView.RowsRemoved += new System.Windows.Forms.DataGridViewRowsRemovedEventHandler(this._requirementsView_RowsRemoved);
-			// 
-			// _requirementsViewTypeColumn
-			// 
-			this._requirementsViewTypeColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-			this._requirementsViewTypeColumn.FillWeight = 70F;
-			this._requirementsViewTypeColumn.HeaderText = "Type";
-			this._requirementsViewTypeColumn.Name = "_requirementsViewTypeColumn";
-			// 
-			// _requirementsViewIdColumn
-			// 
-			this._requirementsViewIdColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-			this._requirementsViewIdColumn.FillWeight = 30F;
-			this._requirementsViewIdColumn.HeaderText = "ID";
-			this._requirementsViewIdColumn.Name = "_requirementsViewIdColumn";
-			// 
 			// MainForm
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -488,6 +488,7 @@
 			this._editPanel.ResumeLayout(false);
 			this._editPanel.PerformLayout();
 			this._requirementsGroupBox.ResumeLayout(false);
+			((System.ComponentModel.ISupportInitialize)(this._requirementsView)).EndInit();
 			this._civsGroupBox.ResumeLayout(false);
 			this._renderModeGroupBox.ResumeLayout(false);
 			this._renderModeGroupBox.PerformLayout();
@@ -496,7 +497,6 @@
 			this._elementTypeGroupBox.ResumeLayout(false);
 			this._elementTypeGroupBox.PerformLayout();
 			this._menuPanel.ResumeLayout(false);
-			((System.ComponentModel.ISupportInitialize)(this._requirementsView)).EndInit();
 			this.ResumeLayout(false);
 
 		}
