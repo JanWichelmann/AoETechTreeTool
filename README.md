@@ -14,6 +14,7 @@ There may still be a few bugs, so let me know if you run into problems.
 ## SYSTEM REQUIREMENTS
 
 This software depends on the .NET Framework 4.0. It should already be installed on current windows systems; if not, you can find it here: https://www.microsoft.com/en-us/download/details.aspx?id=17718
+
 To find out if it is installed just start the program, it will tell you when the appropriate .NET Framework version is not found.
 
 
