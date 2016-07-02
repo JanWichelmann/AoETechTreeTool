@@ -1,11 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
 using System.IO;
-using System.Linq;
-using System.Text;
 using System.Windows.Forms;
 
 namespace AoETechTreeTool
@@ -24,7 +19,7 @@ namespace AoETechTreeTool
 		/// </summary>
 		public string[] SelectedDllFiles { get; private set; }
 
-		#endregion
+		#endregion Variables
 
 		#region Functions
 
@@ -37,7 +32,7 @@ namespace AoETechTreeTool
 			InitializeComponent();
 		}
 
-		#endregion
+		#endregion Functions
 
 		#region Event handlers
 
@@ -62,7 +57,7 @@ namespace AoETechTreeTool
 			_dll3Button.Enabled = _dll3CheckBox.Checked;
 		}
 
-		#endregion
+		#endregion Event handlers
 
 		private void _cancelButton_Click(object sender, EventArgs e)
 		{

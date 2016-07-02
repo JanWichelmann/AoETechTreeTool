@@ -3,9 +3,8 @@ using GenieLibrary.DataElements;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
-using System.IO;
-using System.Windows.Forms;
 using System.Linq;
+using System.Windows.Forms;
 
 namespace AoETechTreeTool
 {
@@ -829,7 +828,7 @@ namespace AoETechTreeTool
 				return;
 			if(_lastDragDropCandidateNode != null)
 				_lastDragDropCandidateNode.BackColor = Color.White;
-			destNode.BackColor = Color.Aquamarine;
+			destNode.BackColor = Color.LightGreen;
 			_lastDragDropCandidateNode = destNode;
 			e.Effect = DragDropEffects.Move;
 		}
