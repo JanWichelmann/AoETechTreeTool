@@ -28,6 +28,7 @@
 		/// </summary>
 		private void InitializeComponent()
 		{
+			this.components = new System.ComponentModel.Container();
 			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
 			this._treeView = new System.Windows.Forms.TreeView();
 			this._loadDataButton = new System.Windows.Forms.Button();
@@ -61,11 +62,18 @@
 			this._entryDeleteButton = new System.Windows.Forms.Button();
 			this._entryNewButton = new System.Windows.Forms.Button();
 			this._menuPanel = new System.Windows.Forms.Panel();
-			this._openDatFileDialog = new System.Windows.Forms.OpenFileDialog();
-			this._openLangDllDialog = new System.Windows.Forms.OpenFileDialog();
 			this._saveDatFileDialog = new System.Windows.Forms.SaveFileDialog();
 			this._openTechTreeDialog = new System.Windows.Forms.OpenFileDialog();
 			this._saveTechTreeDialog = new System.Windows.Forms.SaveFileDialog();
+			this._entryContextMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
+			this._entryNewChildMenuButton = new System.Windows.Forms.ToolStripMenuItem();
+			this._entryNewAboveMenuButton = new System.Windows.Forms.ToolStripMenuItem();
+			this._entryContextMenuSeparator1 = new System.Windows.Forms.ToolStripSeparator();
+			this._entryCopyMenuButton = new System.Windows.Forms.ToolStripMenuItem();
+			this._entryPasteAsChildMenuButton = new System.Windows.Forms.ToolStripMenuItem();
+			this._entryPasteAboveMenuButton = new System.Windows.Forms.ToolStripMenuItem();
+			this._entryContextMenuSeparator2 = new System.Windows.Forms.ToolStripSeparator();
+			this._entryDeleteMenuButton = new System.Windows.Forms.ToolStripMenuItem();
 			this._treeGroupBox.SuspendLayout();
 			this._editPanel.SuspendLayout();
 			this._requirementsGroupBox.SuspendLayout();
@@ -76,6 +84,7 @@
 			((System.ComponentModel.ISupportInitialize)(this._ageField)).BeginInit();
 			this._elementTypeGroupBox.SuspendLayout();
 			this._menuPanel.SuspendLayout();
+			this._entryContextMenu.SuspendLayout();
 			this.SuspendLayout();
 			// 
 			// _treeView
@@ -92,6 +101,9 @@
 			this._treeView.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this._treeView_AfterSelect);
 			this._treeView.DragDrop += new System.Windows.Forms.DragEventHandler(this._treeView_DragDrop);
 			this._treeView.DragEnter += new System.Windows.Forms.DragEventHandler(this._treeView_DragEnter);
+			this._treeView.DragOver += new System.Windows.Forms.DragEventHandler(this._treeView_DragOver);
+			this._treeView.KeyDown += new System.Windows.Forms.KeyEventHandler(this._treeView_KeyDown);
+			this._treeView.MouseClick += new System.Windows.Forms.MouseEventHandler(this._treeView_MouseClick);
 			// 
 			// _loadDataButton
 			// 
@@ -445,18 +457,6 @@
 			this._menuPanel.Size = new System.Drawing.Size(969, 44);
 			this._menuPanel.TabIndex = 6;
 			// 
-			// _openDatFileDialog
-			// 
-			this._openDatFileDialog.FileName = "empires2_x1_p1.dat";
-			this._openDatFileDialog.Filter = "(*.dat)|*.dat";
-			this._openDatFileDialog.Title = "Load data file to edit...";
-			// 
-			// _openLangDllDialog
-			// 
-			this._openLangDllDialog.Filter = "(*.dll)|*.dll";
-			this._openLangDllDialog.Multiselect = true;
-			this._openLangDllDialog.Title = "Load language DLLs for proper name display...";
-			// 
 			// _saveDatFileDialog
 			// 
 			this._saveDatFileDialog.Filter = "(*.dat)|*.dat";
@@ -471,6 +471,80 @@
 			// 
 			this._saveTechTreeDialog.Filter = "(*.ntt)|*.ntt";
 			this._saveTechTreeDialog.Title = "Specify exported tech tree destination file...";
+			// 
+			// _entryContextMenu
+			// 
+			this._entryContextMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this._entryNewChildMenuButton,
+            this._entryNewAboveMenuButton,
+            this._entryContextMenuSeparator1,
+            this._entryCopyMenuButton,
+            this._entryPasteAsChildMenuButton,
+            this._entryPasteAboveMenuButton,
+            this._entryContextMenuSeparator2,
+            this._entryDeleteMenuButton});
+			this._entryContextMenu.Name = "_entryContextMenu";
+			this._entryContextMenu.Size = new System.Drawing.Size(294, 148);
+			// 
+			// _entryNewChildMenuButton
+			// 
+			this._entryNewChildMenuButton.Name = "_entryNewChildMenuButton";
+			this._entryNewChildMenuButton.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.N)));
+			this._entryNewChildMenuButton.Size = new System.Drawing.Size(293, 22);
+			this._entryNewChildMenuButton.Text = "New Child";
+			this._entryNewChildMenuButton.Click += new System.EventHandler(this._entryNewChildMenuButton_Click);
+			// 
+			// _entryNewAboveMenuButton
+			// 
+			this._entryNewAboveMenuButton.Name = "_entryNewAboveMenuButton";
+			this._entryNewAboveMenuButton.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Shift) 
+            | System.Windows.Forms.Keys.N)));
+			this._entryNewAboveMenuButton.Size = new System.Drawing.Size(293, 22);
+			this._entryNewAboveMenuButton.Text = "New Entry Above";
+			this._entryNewAboveMenuButton.Click += new System.EventHandler(this._entryNewAboveMenuButton_Click);
+			// 
+			// _entryContextMenuSeparator1
+			// 
+			this._entryContextMenuSeparator1.Name = "_entryContextMenuSeparator1";
+			this._entryContextMenuSeparator1.Size = new System.Drawing.Size(290, 6);
+			// 
+			// _entryCopyMenuButton
+			// 
+			this._entryCopyMenuButton.Name = "_entryCopyMenuButton";
+			this._entryCopyMenuButton.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.C)));
+			this._entryCopyMenuButton.Size = new System.Drawing.Size(293, 22);
+			this._entryCopyMenuButton.Text = "Copy";
+			this._entryCopyMenuButton.Click += new System.EventHandler(this._entryCopyMenuButton_Click);
+			// 
+			// _entryPasteAsChildMenuButton
+			// 
+			this._entryPasteAsChildMenuButton.Name = "_entryPasteAsChildMenuButton";
+			this._entryPasteAsChildMenuButton.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.V)));
+			this._entryPasteAsChildMenuButton.Size = new System.Drawing.Size(293, 22);
+			this._entryPasteAsChildMenuButton.Text = "Paste As Child";
+			this._entryPasteAsChildMenuButton.Click += new System.EventHandler(this._entryPasteAsChildMenuButton_Click);
+			// 
+			// _entryPasteAboveMenuButton
+			// 
+			this._entryPasteAboveMenuButton.Name = "_entryPasteAboveMenuButton";
+			this._entryPasteAboveMenuButton.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Shift) 
+            | System.Windows.Forms.Keys.V)));
+			this._entryPasteAboveMenuButton.Size = new System.Drawing.Size(293, 22);
+			this._entryPasteAboveMenuButton.Text = "Paste Above";
+			this._entryPasteAboveMenuButton.Click += new System.EventHandler(this._entryPasteAboveMenuButton_Click);
+			// 
+			// _entryContextMenuSeparator2
+			// 
+			this._entryContextMenuSeparator2.Name = "_entryContextMenuSeparator2";
+			this._entryContextMenuSeparator2.Size = new System.Drawing.Size(290, 6);
+			// 
+			// _entryDeleteMenuButton
+			// 
+			this._entryDeleteMenuButton.Name = "_entryDeleteMenuButton";
+			this._entryDeleteMenuButton.ShortcutKeys = System.Windows.Forms.Keys.Delete;
+			this._entryDeleteMenuButton.Size = new System.Drawing.Size(293, 22);
+			this._entryDeleteMenuButton.Text = "Delete";
+			this._entryDeleteMenuButton.Click += new System.EventHandler(this._entryDeleteMenuButton_Click);
 			// 
 			// MainForm
 			// 
@@ -497,6 +571,7 @@
 			this._elementTypeGroupBox.ResumeLayout(false);
 			this._elementTypeGroupBox.PerformLayout();
 			this._menuPanel.ResumeLayout(false);
+			this._entryContextMenu.ResumeLayout(false);
 			this.ResumeLayout(false);
 
 		}
@@ -515,8 +590,6 @@
 		private System.Windows.Forms.Button _entryUpButton;
 		private System.Windows.Forms.Button _entryDeleteButton;
 		private System.Windows.Forms.Button _entryNewButton;
-		private System.Windows.Forms.OpenFileDialog _openDatFileDialog;
-		private System.Windows.Forms.OpenFileDialog _openLangDllDialog;
 		private System.Windows.Forms.SaveFileDialog _saveDatFileDialog;
 		private System.Windows.Forms.OpenFileDialog _openTechTreeDialog;
 		private System.Windows.Forms.SaveFileDialog _saveTechTreeDialog;
@@ -540,6 +613,15 @@
 		private System.Windows.Forms.DataGridView _requirementsView;
 		private System.Windows.Forms.DataGridViewComboBoxColumn _requirementsViewTypeColumn;
 		private System.Windows.Forms.DataGridViewTextBoxColumn _requirementsViewIdColumn;
+		private System.Windows.Forms.ContextMenuStrip _entryContextMenu;
+		private System.Windows.Forms.ToolStripMenuItem _entryNewChildMenuButton;
+		private System.Windows.Forms.ToolStripMenuItem _entryNewAboveMenuButton;
+		private System.Windows.Forms.ToolStripSeparator _entryContextMenuSeparator1;
+		private System.Windows.Forms.ToolStripMenuItem _entryCopyMenuButton;
+		private System.Windows.Forms.ToolStripMenuItem _entryPasteAsChildMenuButton;
+		private System.Windows.Forms.ToolStripMenuItem _entryPasteAboveMenuButton;
+		private System.Windows.Forms.ToolStripSeparator _entryContextMenuSeparator2;
+		private System.Windows.Forms.ToolStripMenuItem _entryDeleteMenuButton;
 	}
 }
 

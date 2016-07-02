@@ -3,7 +3,9 @@ using GenieLibrary.DataElements;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.IO;
 using System.Windows.Forms;
+using System.Linq;
 
 namespace AoETechTreeTool
 {
@@ -39,6 +41,16 @@ namespace AoETechTreeTool
 		/// The currently selected element.
 		/// </summary>
 		private TechTreeNew.TechTreeElement _selectedElement = null;
+
+		/// <summary>
+		/// The currently copied element (and its whole subtree).
+		/// </summary>
+		private TechTreeNew.TechTreeElement _copiedElement = null;
+
+		/// <summary>
+		/// The last highlighted drag drop candidate node (cached for faster de-highlighting).
+		/// </summary>
+		private TreeNode _lastDragDropCandidateNode = null;
 
 		#endregion Variables
 
@@ -283,15 +295,16 @@ namespace AoETechTreeTool
 
 		private void _loadDataButton_Click(object sender, EventArgs e)
 		{
-			// Show DAT open dialog
-			if(_openDatFileDialog.ShowDialog() != DialogResult.OK)
+			// Show path dialog
+			PathForm pathDialog = new PathForm();
+			if(pathDialog.ShowDialog() != DialogResult.OK)
 				return;
 
 			// Try open DAT file
 			try
 			{
 				// Open
-				IORAMHelper.RAMBuffer compressedFile = new IORAMHelper.RAMBuffer(_openDatFileDialog.FileName);
+				IORAMHelper.RAMBuffer compressedFile = new IORAMHelper.RAMBuffer(pathDialog.SelectedDatFile);
 				_datFile = new GenieFile(GenieFile.DecompressData(compressedFile));
 			}
 			catch(Exception ex)
@@ -301,15 +314,11 @@ namespace AoETechTreeTool
 				return;
 			}
 
-			// Show language DLL open dialog
-			if(_openLangDllDialog.ShowDialog() != DialogResult.OK)
-				return;
-
 			// Try load DLL files
 			try
 			{
 				// Open
-				_langDllWrapper = new LanguageFileWrapper(_openLangDllDialog.FileNames);
+				_langDllWrapper = new LanguageFileWrapper(pathDialog.SelectedDllFiles);
 			}
 			catch(Exception ex)
 			{
@@ -455,6 +464,7 @@ namespace AoETechTreeTool
 					_requirementsView.Rows.Add("Unit", req.Item2.ToString());
 				else
 					_requirementsView.Rows.Add("Research", req.Item2.ToString());
+			_entryContextMenu.Tag = _selectedElement;
 
 			// Update civs
 			for(int i = 0; i < _civsList.Items.Count; ++i)
@@ -496,6 +506,7 @@ namespace AoETechTreeTool
 				newNode.ImageIndex = newElement.Age;
 				newNode.SelectedImageIndex = newElement.Age;
 				_treeView.SelectedNode.Nodes.Add(newNode);
+				_treeView.SelectedNode.Expand();
 			}
 			_treeView.Select();
 			_treeView.ResumeLayout();
@@ -776,6 +787,53 @@ namespace AoETechTreeTool
 			e.Effect = DragDropEffects.Move;
 		}
 
+		private void _treeView_DragOver(object sender, DragEventArgs e)
+		{
+			if(!e.Data.GetDataPresent("System.Windows.Forms.TreeNode", false))
+			{
+				// No drag drop possible
+				e.Effect = DragDropEffects.None;
+				return;
+			}
+
+			// Get nodes
+			TreeNode movedNode = (TreeNode)e.Data.GetData("System.Windows.Forms.TreeNode");
+			Point dragPos = _treeView.PointToClient(new Point(e.X, e.Y));
+			TreeNode destNode = _treeView.GetNodeAt(dragPos.X, dragPos.Y);
+			if(destNode == null)
+				return;
+
+			// Check whether destination node is child of parent node
+			Func<TreeNode, bool> destNodeIsChildNodeOf = null;
+			destNodeIsChildNodeOf = (node) =>
+			{
+				// Contains node?
+				if(node.Nodes.Contains(destNode))
+					return true;
+
+				// Check children
+				foreach(TreeNode currChild in node.Nodes)
+					if(destNodeIsChildNodeOf(currChild))
+						return true;
+				return false;
+			};
+			if(destNodeIsChildNodeOf(movedNode))
+			{
+				// Deny drag drop
+				e.Effect = DragDropEffects.None;
+				return;
+			}
+
+			// Highlight current destination node
+			if(_lastDragDropCandidateNode == destNode)
+				return;
+			if(_lastDragDropCandidateNode != null)
+				_lastDragDropCandidateNode.BackColor = Color.White;
+			destNode.BackColor = Color.Aquamarine;
+			_lastDragDropCandidateNode = destNode;
+			e.Effect = DragDropEffects.Move;
+		}
+
 		private void _treeView_DragDrop(object sender, DragEventArgs e)
 		{
 			// Is a tree node dragged?
@@ -788,19 +846,36 @@ namespace AoETechTreeTool
 				TreeNode movedNode = (TreeNode)e.Data.GetData("System.Windows.Forms.TreeNode");
 				if(movedNode != destNode)
 				{
+					// Check whether destination node is child of parent node
+					Func<TreeNode, bool> destNodeIsChildNodeOf = null;
+					destNodeIsChildNodeOf = (node) =>
+					{
+						// Contains node?
+						if(node.Nodes.Contains(destNode))
+							return true;
+
+						// Check children
+						foreach(TreeNode currChild in node.Nodes)
+							if(destNodeIsChildNodeOf(currChild))
+								return true;
+						return false;
+					};
+					if(destNodeIsChildNodeOf(movedNode))
+						return;
+
 					// Remove node from tree view
 					if(movedNode.Parent == null)
 						_treeView.Nodes.Remove(movedNode);
 					else
 						movedNode.Parent.Nodes.Remove(movedNode);
 
-					// Insert at end of destination node (or as last parent element)
+					// Insert at begin of destination node (or as first parent element)
 					if(destNode == null)
-						_treeView.Nodes.Add(movedNode);
+						_treeView.Nodes.Insert(0, movedNode);
 					else
 					{
-						// Insert at end of destination node
-						destNode.Nodes.Add(movedNode);
+						// Insert at begin of destination node
+						destNode.Nodes.Insert(0, movedNode);
 
 						// Update sub nodes recursively
 						Action<TreeNode> recAgeUpdate = null;
@@ -869,6 +944,232 @@ namespace AoETechTreeTool
 		{
 			// Call cell edit event
 			_requirementsView_CellEndEdit(sender, null);
+		}
+
+		private void _treeView_MouseClick(object sender, MouseEventArgs e)
+		{
+			// Select node below cursor
+			_treeView.SelectedNode = _treeView.GetNodeAt(e.X, e.Y);
+
+			// Show context menu
+			if(e.Button == MouseButtons.Right && _treeView.SelectedNode != null)
+				_entryContextMenu.Show(Cursor.Position);
+			else
+				_entryContextMenu.Hide();
+		}
+
+		private void _treeView_KeyDown(object sender, KeyEventArgs e)
+		{
+			// Function to recursively run through context menu shortcuts and trigger them even if the context menu is hidden
+			Action<ToolStripMenuItem> runThroughShortcutsRec = null;
+			runThroughShortcutsRec = (node) =>
+			{
+				// Shortcut triggered?
+				if(node.ShortcutKeys == e.KeyData)
+				{
+					// Click on element
+					node.PerformClick();
+
+					// Mark key press as handled (suppresses the Windows " *ding* " sound)
+					e.Handled = true;
+					e.SuppressKeyPress = true;
+				}
+
+				// Check children shortcuts recursively
+				foreach(ToolStripMenuItem childMenu in node.DropDownItems.OfType<ToolStripMenuItem>())
+					runThroughShortcutsRec(childMenu);
+			};
+
+			// If a node is marked as active, search for triggered shortcuts
+			if(_entryContextMenu.Tag != null)
+				foreach(ToolStripMenuItem item in _entryContextMenu.Items.OfType<ToolStripMenuItem>())
+					runThroughShortcutsRec(item);
+		}
+
+		private void _entryNewChildMenuButton_Click(object sender, EventArgs e)
+		{
+			// Create new element
+			TechTreeNew.TechTreeElement newElement = new TechTreeNew.TechTreeElement()
+			{
+				Age = ((TechTreeNew.TechTreeElement)((TreeNode)_entryContextMenu.Tag).Tag).Age,
+				Children = new List<TechTreeNew.TechTreeElement>(),
+				DisableCivs = new List<byte>(),
+				ElementObjectID = 0,
+				ElementType = TechTreeNew.TechTreeElement.ItemType.Creatable,
+				RenderMode = TechTreeNew.TechTreeElement.ItemRenderMode.Standard,
+				RequiredElements = new List<Tuple<TechTreeNew.TechTreeElement.ItemType, short>>()
+			};
+
+			// Create node
+			TreeNode newNode = new TreeNode(GetElementName(newElement));
+			newNode.Tag = newElement;
+			newNode.ImageIndex = newElement.Age;
+			newNode.SelectedImageIndex = newElement.Age;
+
+			// Insert node
+			_treeView.SuspendLayout();
+			((TreeNode)_entryContextMenu.Tag).Nodes.Add(newNode);
+			((TreeNode)_entryContextMenu.Tag).Expand();
+			_treeView.Select();
+			_treeView.ResumeLayout();
+		}
+
+		private void _entryNewAboveMenuButton_Click(object sender, EventArgs e)
+		{
+			// Get selected node
+			TreeNode selectedNode = ((TreeNode)_entryContextMenu.Tag);
+
+			// Create new element
+			TechTreeNew.TechTreeElement newElement = new TechTreeNew.TechTreeElement()
+			{
+				Age = ((TechTreeNew.TechTreeElement)selectedNode.Parent?.Tag)?.Age ?? 0,
+				Children = new List<TechTreeNew.TechTreeElement>(),
+				DisableCivs = new List<byte>(),
+				ElementObjectID = 0,
+				ElementType = TechTreeNew.TechTreeElement.ItemType.Creatable,
+				RenderMode = TechTreeNew.TechTreeElement.ItemRenderMode.Standard,
+				RequiredElements = new List<Tuple<TechTreeNew.TechTreeElement.ItemType, short>>()
+			};
+
+			// Create node
+			TreeNode newNode = new TreeNode(GetElementName(newElement));
+			newNode.Tag = newElement;
+
+			// Insert node above the selected one
+			_treeView.SuspendLayout();
+			if(selectedNode.Parent == null)
+				_treeView.Nodes.Insert(selectedNode.Index, newNode);
+			else
+				selectedNode.Parent.Nodes.Insert(selectedNode.Index, newNode);
+			_treeView.Select();
+			_treeView.ResumeLayout();
+		}
+
+		private void _entryCopyMenuButton_Click(object sender, EventArgs e)
+		{
+			// Function to copy the selected subtree recursively
+			Func<TreeNode, TechTreeNew.TechTreeElement> copySubTreeRec = null;
+			copySubTreeRec = (currNode) =>
+			{
+				// Copy element
+				TechTreeNew.TechTreeElement currElement = (TechTreeNew.TechTreeElement)currNode.Tag;
+				TechTreeNew.TechTreeElement newElement = new TechTreeNew.TechTreeElement()
+				{
+					Age = currElement.Age,
+					Children = new List<TechTreeNew.TechTreeElement>(),
+					DisableCivs = new List<byte>(currElement.DisableCivs),
+					ElementObjectID = currElement.ElementObjectID,
+					ElementType = currElement.ElementType,
+					RenderMode = currElement.RenderMode,
+					RequiredElements = new List<Tuple<TechTreeNew.TechTreeElement.ItemType, short>>()
+				};
+				currElement.RequiredElements.ForEach(re => newElement.RequiredElements.Add(new Tuple<TechTreeNew.TechTreeElement.ItemType, short>(re.Item1, re.Item2)));
+
+				// Run through sub nodes
+				foreach(TreeNode currChildNode in currNode.Nodes)
+					newElement.Children.Add(copySubTreeRec(currChildNode));
+
+				// Return element
+				return newElement;
+			};
+
+			// Copy subtree
+			_copiedElement = copySubTreeRec((TreeNode)_entryContextMenu.Tag);
+		}
+
+		private void _entryPasteAsChildMenuButton_Click(object sender, EventArgs e)
+		{
+			// Run recursively through copied elements and create nodes
+			Func<TechTreeNew.TechTreeElement, byte, TreeNode> createNodesRec = null;
+			createNodesRec = (currElement, minimumAge) =>
+			{
+				// Create age image
+				EnsureAgeImageExists(currElement.Age);
+
+				// Copy element
+				TechTreeNew.TechTreeElement copiedElement = new TechTreeNew.TechTreeElement()
+				{
+					Age = Math.Max(minimumAge, currElement.Age),
+					Children = new List<TechTreeNew.TechTreeElement>(),
+					DisableCivs = new List<byte>(currElement.DisableCivs),
+					ElementObjectID = currElement.ElementObjectID,
+					ElementType = currElement.ElementType,
+					RenderMode = currElement.RenderMode,
+					RequiredElements = new List<Tuple<TechTreeNew.TechTreeElement.ItemType, short>>()
+				};
+				currElement.RequiredElements.ForEach(re => copiedElement.RequiredElements.Add(new Tuple<TechTreeNew.TechTreeElement.ItemType, short>(re.Item1, re.Item2)));
+
+				// Create node
+				TreeNode elementNode = new TreeNode();
+				elementNode.Tag = copiedElement;
+
+				// Update node display
+				UpdateNodeDisplay(elementNode);
+
+				// Run through children
+				foreach(var currChild in currElement.Children)
+					elementNode.Nodes.Add(createNodesRec(currChild, Math.Max(currChild.Age, minimumAge)));
+				return elementNode;
+			};
+
+			// Insert new node
+			_treeView.SuspendLayout();
+			((TreeNode)_entryContextMenu.Tag).Nodes.Add(createNodesRec(_copiedElement, ((TechTreeNew.TechTreeElement)((TreeNode)_entryContextMenu.Tag).Tag).Age));
+			((TreeNode)_entryContextMenu.Tag).Expand();
+			_treeView.ResumeLayout();
+		}
+
+		private void _entryPasteAboveMenuButton_Click(object sender, EventArgs e)
+		{
+			// Run recursively through copied elements and create nodes
+			Func<TechTreeNew.TechTreeElement, byte, TreeNode> createNodesRec = null;
+			createNodesRec = (currElement, minimumAge) =>
+			{
+				// Create age image
+				EnsureAgeImageExists(currElement.Age);
+
+				// Copy element
+				TechTreeNew.TechTreeElement copiedElement = new TechTreeNew.TechTreeElement()
+				{
+					Age = Math.Max(minimumAge, currElement.Age),
+					Children = new List<TechTreeNew.TechTreeElement>(),
+					DisableCivs = new List<byte>(currElement.DisableCivs),
+					ElementObjectID = currElement.ElementObjectID,
+					ElementType = currElement.ElementType,
+					RenderMode = currElement.RenderMode,
+					RequiredElements = new List<Tuple<TechTreeNew.TechTreeElement.ItemType, short>>()
+				};
+				currElement.RequiredElements.ForEach(re => copiedElement.RequiredElements.Add(new Tuple<TechTreeNew.TechTreeElement.ItemType, short>(re.Item1, re.Item2)));
+
+				// Create node
+				TreeNode elementNode = new TreeNode();
+				elementNode.Tag = copiedElement;
+
+				// Update node display
+				UpdateNodeDisplay(elementNode);
+
+				// Run through children
+				foreach(var currChild in currElement.Children)
+					elementNode.Nodes.Add(createNodesRec(currChild, Math.Max(currChild.Age, minimumAge)));
+				return elementNode;
+			};
+
+			// Get selected node
+			TreeNode selectedNode = ((TreeNode)_entryContextMenu.Tag);
+
+			// Insert new node
+			_treeView.SuspendLayout();
+			if(selectedNode.Parent == null)
+				_treeView.Nodes.Insert(selectedNode.Index, createNodesRec(_copiedElement, ((TechTreeNew.TechTreeElement)selectedNode.Tag).Age));
+			else
+				selectedNode.Parent.Nodes.Insert(selectedNode.Index, createNodesRec(_copiedElement, ((TechTreeNew.TechTreeElement)selectedNode.Tag).Age));
+			_treeView.ResumeLayout();
+		}
+
+		private void _entryDeleteMenuButton_Click(object sender, EventArgs e)
+		{
+			// Call delete button handler
+			_entryDeleteButton_Click(sender, e);
 		}
 
 		#endregion Event handlers
