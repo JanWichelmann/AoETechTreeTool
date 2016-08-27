@@ -62,6 +62,7 @@
 			this._entryDeleteButton = new System.Windows.Forms.Button();
 			this._entryNewButton = new System.Windows.Forms.Button();
 			this._menuPanel = new System.Windows.Forms.Panel();
+			this._designFormButton = new System.Windows.Forms.Button();
 			this._saveDatFileDialog = new System.Windows.Forms.SaveFileDialog();
 			this._openTechTreeDialog = new System.Windows.Forms.OpenFileDialog();
 			this._saveTechTreeDialog = new System.Windows.Forms.SaveFileDialog();
@@ -133,7 +134,7 @@
 			this._exportTreeButton.Name = "_exportTreeButton";
 			this._exportTreeButton.Size = new System.Drawing.Size(130, 23);
 			this._exportTreeButton.TabIndex = 3;
-			this._exportTreeButton.Text = "Export tech tree data";
+			this._exportTreeButton.Text = "Export tree data";
 			this._exportTreeButton.UseVisualStyleBackColor = true;
 			this._exportTreeButton.Click += new System.EventHandler(this._exportTreeButton_Click);
 			// 
@@ -144,7 +145,7 @@
 			this._importTreeButton.Name = "_importTreeButton";
 			this._importTreeButton.Size = new System.Drawing.Size(130, 23);
 			this._importTreeButton.TabIndex = 4;
-			this._importTreeButton.Text = "Import tech tree data";
+			this._importTreeButton.Text = "Import tree data";
 			this._importTreeButton.UseVisualStyleBackColor = true;
 			this._importTreeButton.Click += new System.EventHandler(this._importTreeButton_Click);
 			// 
@@ -447,6 +448,7 @@
 			// 
 			// _menuPanel
 			// 
+			this._menuPanel.Controls.Add(this._designFormButton);
 			this._menuPanel.Controls.Add(this._loadDataButton);
 			this._menuPanel.Controls.Add(this._saveDataButton);
 			this._menuPanel.Controls.Add(this._importTreeButton);
@@ -457,6 +459,17 @@
 			this._menuPanel.Size = new System.Drawing.Size(969, 44);
 			this._menuPanel.TabIndex = 6;
 			// 
+			// _designFormButton
+			// 
+			this._designFormButton.Enabled = false;
+			this._designFormButton.Location = new System.Drawing.Point(560, 13);
+			this._designFormButton.Name = "_designFormButton";
+			this._designFormButton.Size = new System.Drawing.Size(130, 23);
+			this._designFormButton.TabIndex = 5;
+			this._designFormButton.Text = "Edit design data";
+			this._designFormButton.UseVisualStyleBackColor = true;
+			this._designFormButton.Click += new System.EventHandler(this._designFormButton_Click);
+			// 
 			// _saveDatFileDialog
 			// 
 			this._saveDatFileDialog.Filter = "(*.dat)|*.dat";
@@ -464,12 +477,12 @@
 			// 
 			// _openTechTreeDialog
 			// 
-			this._openTechTreeDialog.Filter = "(*.ntt)|*.ntt";
+			this._openTechTreeDialog.Filter = "Tech tree data files  (*.techtreedata;*.ntt)|*.techtreedata;*.ntt";
 			this._openTechTreeDialog.Title = "Specify tech tree file to import";
 			// 
 			// _saveTechTreeDialog
 			// 
-			this._saveTechTreeDialog.Filter = "(*.ntt)|*.ntt";
+			this._saveTechTreeDialog.Filter = "Tech tree data files  (*.techtreedata)|*.techtreedata";
 			this._saveTechTreeDialog.Title = "Specify exported tech tree destination file...";
 			// 
 			// _entryContextMenu
@@ -622,6 +635,7 @@
 		private System.Windows.Forms.ToolStripMenuItem _entryPasteAboveMenuButton;
 		private System.Windows.Forms.ToolStripSeparator _entryContextMenuSeparator2;
 		private System.Windows.Forms.ToolStripMenuItem _entryDeleteMenuButton;
+		private System.Windows.Forms.Button _designFormButton;
 	}
 }
 

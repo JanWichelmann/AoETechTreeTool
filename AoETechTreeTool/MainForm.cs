@@ -51,6 +51,11 @@ namespace AoETechTreeTool
 		/// </summary>
 		private TreeNode _lastDragDropCandidateNode = null;
 
+		/// <summary>
+		/// The design form.
+		/// </summary>
+		private DesignForm _designForm = null;
+
 		#endregion Variables
 
 		#region Functions
@@ -95,8 +100,15 @@ namespace AoETechTreeTool
 			{
 				// Set variables
 				_datFile.NewTechTree = true;
-				_datFile.TechTreeNew = new TechTreeNew() { ParentElements = new List<TechTreeNew.TechTreeElement>() };
-			}
+				_datFile.TechTreeNew = new TechTreeNew()
+				{
+					ParentElements = new List<TechTreeNew.TechTreeElement>(),
+					DesignData = new TechTreeNew.TechTreeDesign()
+				};
+
+				// Load default design data
+				_datFile.TechTreeNew.DesignData.ReadData(new IORAMHelper.RAMBuffer(Properties.Resources.DefaultDesignData));
+            }
 
 			// Run recursively through elements and create nodes
 			Func<TechTreeNew.TechTreeElement, TreeNode> recursiveTreeViewFill = null;
@@ -143,7 +155,7 @@ namespace AoETechTreeTool
 		private void BuildTechTreeStructure()
 		{
 			// Reset tree structure
-			_datFile.TechTreeNew = new TechTreeNew() { ParentElements = new List<TechTreeNew.TechTreeElement>() };
+			_datFile.TechTreeNew.ParentElements = new List<TechTreeNew.TechTreeElement>();
 
 			// Traverse tree view recursively
 			Func<TreeNode, TechTreeNew.TechTreeElement> recursiveTreeViewTraversal = null;
@@ -330,12 +342,17 @@ namespace AoETechTreeTool
 			_saveDataButton.Enabled = true;
 			_exportTreeButton.Enabled = true;
 			_importTreeButton.Enabled = true;
+			_designFormButton.Enabled = true;
 			_treeGroupBox.Enabled = true;
 			_editPanel.Enabled = false;
 			_entryNewButton.Enabled = true;
 
 			// Update tree view
 			RefillTreeView();
+
+			// Update design window, if open
+			if(_designForm != null)
+				_designForm.SetDatFile(_datFile);
 
 			// Fill civ list box
 			_civsList.Items.Clear();
@@ -382,7 +399,7 @@ namespace AoETechTreeTool
 			{
 				// Write into buffer
 				IORAMHelper.RAMBuffer buffer = new IORAMHelper.RAMBuffer();
-				_datFile.TechTreeNew.WriteData(buffer);
+				_datFile.TechTreeNew.WriteData(buffer, true);
 
 				// Save buffer
 				buffer.Save(_saveTechTreeDialog.FileName);
@@ -406,8 +423,9 @@ namespace AoETechTreeTool
 			{
 				// Load data from file
 				IORAMHelper.RAMBuffer buffer = new IORAMHelper.RAMBuffer(_openTechTreeDialog.FileName);
-				_datFile.TechTreeNew = new TechTreeNew();
-				_datFile.TechTreeNew.ReadData(buffer);
+				if(_datFile.TechTreeNew == null)
+					_datFile.TechTreeNew = new TechTreeNew();
+				_datFile.TechTreeNew.ReadData(buffer, true);
 
 				// Disable edit panel
 				_editPanel.Enabled = false;
@@ -1169,6 +1187,22 @@ namespace AoETechTreeTool
 		{
 			// Call delete button handler
 			_entryDeleteButton_Click(sender, e);
+		}
+
+		private void _designFormButton_Click(object sender, EventArgs e)
+		{
+			// Form not already visible?
+			if(_designForm == null)
+			{
+				// Create form
+				_designForm = new DesignForm(_datFile);
+
+				// Catch close event to properly destroy object
+				_designForm.FormClosed += (s, ea) => { _designForm = null; };
+
+				// Show form
+				_designForm.Show();
+			}
 		}
 
 		#endregion Event handlers

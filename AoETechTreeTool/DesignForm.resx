@@ -117,27 +117,40 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <metadata name="_requirementsViewTypeColumn.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>True</value>
-  </metadata>
-  <metadata name="_requirementsViewIdColumn.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>True</value>
-  </metadata>
-  <metadata name="_saveDatFileDialog.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>318, 17</value>
-  </metadata>
-  <metadata name="_openTechTreeDialog.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>472, 17</value>
-  </metadata>
-  <metadata name="_saveTechTreeDialog.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>641, 17</value>
-  </metadata>
-  <metadata name="_entryContextMenu.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+  <metadata name="_openDesignDialog.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>806, 17</value>
   </metadata>
-  <metadata name="$this.TrayHeight" type="System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>56</value>
+  <metadata name="_saveDesignDialog.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>975, 17</value>
   </metadata>
+  <metadata name="_infoToolTip.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>1129, 17</value>
+  </metadata>
+  <data name="_slpLegendDisabledLabel.ToolTip" xml:space="preserve">
+    <value>The SLP drawed as the "disabled" icon onto the legend graphic (default ID is #53211).
+It is unknown why it is not directly in the legend background graphic, but instead drawn onto it later.
+Frames:
+0 - "Disabled" icon, drawn onto the legend graphic at the position defined by the resolution settings.</value>
+  </data>
+  <data name="slpLegendAndAgesLabel.ToolTip" xml:space="preserve">
+    <value>The legend and ages background graphics (default ID is #50341).
+Frames:
+-&gt; Legend background graphics for each resolution, using the same order as in the resolution settings
+-&gt; For each resolution: 
+          - One frame per age, showing the current age (for the ingame tree, in ascending order)
+          - One frame with no current age (for the tree accessible in the game setup dialog)</value>
+  </data>
+  <data name="_slpNodeBoxLabel.ToolTip" xml:space="preserve">
+    <value>The background box of the element nodes (default ID is #53206).
+Frames:
+0 - Building enabled (64x64)
+1 - Building disabled (64x64)
+2 - Unit enabled (64x64)
+3 - Unit disabled (64x64)
+4 - Research enabled (64x64)
+5 - Research disabled (64x64)
+6 - Disabled node overlay (1x1), transparent per default</value>
+  </data>
   <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   <data name="$this.Icon" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
