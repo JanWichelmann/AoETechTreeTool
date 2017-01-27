@@ -481,7 +481,7 @@ namespace AoETechTreeTool
 					_requirementsView.Rows.Add("Unit", req.Item2.ToString());
 				else
 					_requirementsView.Rows.Add("Research", req.Item2.ToString());
-			_entryContextMenu.Tag = _selectedElement;
+			_entryContextMenu.Tag = e.Node;
 
 			// Update civs
 			for(int i = 0; i < _civsList.Items.Count; ++i)
@@ -563,6 +563,12 @@ namespace AoETechTreeTool
 						_treeView.SelectedNode = selNode.PrevNode;
 					else
 						_treeView.SelectedNode = selNode.Parent;
+
+					// Collapse parent node first if this is the last child
+					// -> Workaround. Else the parent node will still be treated as "expanded", leading to a stack overflow when Shift-Collapsing the grandparent node.
+					//    No idea what causes this strange behaviour, because the parent node should do such cleanup itself...
+					if(selNode.Parent.Nodes.Count == 1)
+						selNode.Parent.Collapse();
 
 					// Delete node
 					selNode.Parent.Nodes.Remove(selNode);
@@ -884,7 +890,13 @@ namespace AoETechTreeTool
 					if(movedNode.Parent == null)
 						_treeView.Nodes.Remove(movedNode);
 					else
+					{
+						// Collapse parent node first if this is the last child
+						// For an explanation see node deletion event handler (_entryDeleteButton_Click)
+						if(movedNode.Parent.Nodes.Count == 1)
+							movedNode.Parent.Collapse();
 						movedNode.Parent.Nodes.Remove(movedNode);
+					}
 
 					// Insert at begin of destination node (or as first parent element)
 					if(destNode == null)
