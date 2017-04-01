@@ -166,7 +166,8 @@ namespace AoETechTreeTool
 					ElementObjectID = nodeElement.ElementObjectID,
 					ElementType = nodeElement.ElementType,
 					RenderMode = nodeElement.RenderMode,
-					RequiredElements = new List<Tuple<TechTreeNew.TechTreeElement.ItemType, short>>(nodeElement.RequiredElements)
+					RequiredElements = new List<Tuple<TechTreeNew.TechTreeElement.ItemType, short>>(nodeElement.RequiredElements),
+					NodeBackgroundIndex = nodeElement.NodeBackgroundIndex
 				};
 
 				// Run through children
