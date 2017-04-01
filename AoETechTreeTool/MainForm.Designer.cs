@@ -37,6 +37,8 @@
 			this._importTreeButton = new System.Windows.Forms.Button();
 			this._treeGroupBox = new System.Windows.Forms.GroupBox();
 			this._editPanel = new System.Windows.Forms.Panel();
+			this._nodeBoxGroupBox = new System.Windows.Forms.GroupBox();
+			this._nodeBackgroundField = new System.Windows.Forms.ComboBox();
 			this._requirementsGroupBox = new System.Windows.Forms.GroupBox();
 			this._requirementsView = new System.Windows.Forms.DataGridView();
 			this._requirementsViewTypeColumn = new System.Windows.Forms.DataGridViewComboBoxColumn();
@@ -77,6 +79,7 @@
 			this._entryDeleteMenuButton = new System.Windows.Forms.ToolStripMenuItem();
 			this._treeGroupBox.SuspendLayout();
 			this._editPanel.SuspendLayout();
+			this._nodeBoxGroupBox.SuspendLayout();
 			this._requirementsGroupBox.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this._requirementsView)).BeginInit();
 			this._civsGroupBox.SuspendLayout();
@@ -94,7 +97,7 @@
 			this._treeView.Dock = System.Windows.Forms.DockStyle.Fill;
 			this._treeView.Location = new System.Drawing.Point(3, 16);
 			this._treeView.Name = "_treeView";
-			this._treeView.Size = new System.Drawing.Size(726, 614);
+			this._treeView.Size = new System.Drawing.Size(726, 634);
 			this._treeView.TabIndex = 0;
 			this._treeView.AfterCollapse += new System.Windows.Forms.TreeViewEventHandler(this._treeView_AfterCollapse);
 			this._treeView.AfterExpand += new System.Windows.Forms.TreeViewEventHandler(this._treeView_AfterExpand);
@@ -103,6 +106,7 @@
 			this._treeView.DragDrop += new System.Windows.Forms.DragEventHandler(this._treeView_DragDrop);
 			this._treeView.DragEnter += new System.Windows.Forms.DragEventHandler(this._treeView_DragEnter);
 			this._treeView.DragOver += new System.Windows.Forms.DragEventHandler(this._treeView_DragOver);
+			this._treeView.QueryContinueDrag += new System.Windows.Forms.QueryContinueDragEventHandler(this._treeView_QueryContinueDrag);
 			this._treeView.KeyDown += new System.Windows.Forms.KeyEventHandler(this._treeView_KeyDown);
 			this._treeView.MouseClick += new System.Windows.Forms.MouseEventHandler(this._treeView_MouseClick);
 			// 
@@ -157,13 +161,14 @@
 			this._treeGroupBox.Enabled = false;
 			this._treeGroupBox.Location = new System.Drawing.Point(0, 44);
 			this._treeGroupBox.Name = "_treeGroupBox";
-			this._treeGroupBox.Size = new System.Drawing.Size(969, 633);
+			this._treeGroupBox.Size = new System.Drawing.Size(969, 653);
 			this._treeGroupBox.TabIndex = 5;
 			this._treeGroupBox.TabStop = false;
 			this._treeGroupBox.Text = "Tech Tree Editing";
 			// 
 			// _editPanel
 			// 
+			this._editPanel.Controls.Add(this._nodeBoxGroupBox);
 			this._editPanel.Controls.Add(this._requirementsGroupBox);
 			this._editPanel.Controls.Add(this._civsGroupBox);
 			this._editPanel.Controls.Add(this._renderModeGroupBox);
@@ -179,17 +184,37 @@
 			this._editPanel.Enabled = false;
 			this._editPanel.Location = new System.Drawing.Point(729, 16);
 			this._editPanel.Name = "_editPanel";
-			this._editPanel.Size = new System.Drawing.Size(237, 614);
+			this._editPanel.Size = new System.Drawing.Size(237, 634);
 			this._editPanel.TabIndex = 1;
+			// 
+			// _nodeBoxGroupBox
+			// 
+			this._nodeBoxGroupBox.Controls.Add(this._nodeBackgroundField);
+			this._nodeBoxGroupBox.Location = new System.Drawing.Point(10, 192);
+			this._nodeBoxGroupBox.Name = "_nodeBoxGroupBox";
+			this._nodeBoxGroupBox.Size = new System.Drawing.Size(218, 50);
+			this._nodeBoxGroupBox.TabIndex = 17;
+			this._nodeBoxGroupBox.TabStop = false;
+			this._nodeBoxGroupBox.Text = "Node background";
+			// 
+			// _nodeBackgroundField
+			// 
+			this._nodeBackgroundField.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+			this._nodeBackgroundField.FormattingEnabled = true;
+			this._nodeBackgroundField.Location = new System.Drawing.Point(8, 19);
+			this._nodeBackgroundField.Name = "_nodeBackgroundField";
+			this._nodeBackgroundField.Size = new System.Drawing.Size(202, 21);
+			this._nodeBackgroundField.TabIndex = 0;
+			this._nodeBackgroundField.SelectedIndexChanged += new System.EventHandler(this._nodeBackgroundField_SelectedIndexChanged);
 			// 
 			// _requirementsGroupBox
 			// 
 			this._requirementsGroupBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left)));
 			this._requirementsGroupBox.Controls.Add(this._requirementsView);
-			this._requirementsGroupBox.Location = new System.Drawing.Point(10, 525);
+			this._requirementsGroupBox.Location = new System.Drawing.Point(10, 536);
 			this._requirementsGroupBox.Name = "_requirementsGroupBox";
-			this._requirementsGroupBox.Size = new System.Drawing.Size(218, 80);
+			this._requirementsGroupBox.Size = new System.Drawing.Size(218, 82);
 			this._requirementsGroupBox.TabIndex = 16;
 			this._requirementsGroupBox.TabStop = false;
 			this._requirementsGroupBox.Text = "Requirements";
@@ -204,7 +229,7 @@
 			this._requirementsView.Dock = System.Windows.Forms.DockStyle.Fill;
 			this._requirementsView.Location = new System.Drawing.Point(3, 16);
 			this._requirementsView.Name = "_requirementsView";
-			this._requirementsView.Size = new System.Drawing.Size(212, 61);
+			this._requirementsView.Size = new System.Drawing.Size(212, 63);
 			this._requirementsView.TabIndex = 0;
 			this._requirementsView.CellEndEdit += new System.Windows.Forms.DataGridViewCellEventHandler(this._requirementsView_CellEndEdit);
 			this._requirementsView.RowsRemoved += new System.Windows.Forms.DataGridViewRowsRemovedEventHandler(this._requirementsView_RowsRemoved);
@@ -229,9 +254,9 @@
 			this._civsGroupBox.Controls.Add(this._civsNoneButton);
 			this._civsGroupBox.Controls.Add(this._civsAllButton);
 			this._civsGroupBox.Controls.Add(this._civsList);
-			this._civsGroupBox.Location = new System.Drawing.Point(10, 192);
+			this._civsGroupBox.Location = new System.Drawing.Point(10, 248);
 			this._civsGroupBox.Name = "_civsGroupBox";
-			this._civsGroupBox.Size = new System.Drawing.Size(218, 327);
+			this._civsGroupBox.Size = new System.Drawing.Size(218, 282);
 			this._civsGroupBox.TabIndex = 15;
 			this._civsGroupBox.TabStop = false;
 			this._civsGroupBox.Text = "Civs with access to this item";
@@ -273,7 +298,7 @@
 			this._civsList.FormattingEnabled = true;
 			this._civsList.Location = new System.Drawing.Point(3, 50);
 			this._civsList.Name = "_civsList";
-			this._civsList.Size = new System.Drawing.Size(212, 274);
+			this._civsList.Size = new System.Drawing.Size(212, 229);
 			this._civsList.Sorted = true;
 			this._civsList.TabIndex = 0;
 			this._civsList.ItemCheck += new System.Windows.Forms.ItemCheckEventHandler(this._civsList_ItemCheck);
@@ -328,7 +353,7 @@
 			// 
 			// _ageField
 			// 
-			this._ageField.Location = new System.Drawing.Point(169, 93);
+			this._ageField.Location = new System.Drawing.Point(161, 93);
 			this._ageField.Maximum = new decimal(new int[] {
             255,
             0,
@@ -342,7 +367,7 @@
 			// _ageLabel
 			// 
 			this._ageLabel.AutoSize = true;
-			this._ageLabel.Location = new System.Drawing.Point(134, 96);
+			this._ageLabel.Location = new System.Drawing.Point(126, 96);
 			this._ageLabel.Name = "_ageLabel";
 			this._ageLabel.Size = new System.Drawing.Size(29, 13);
 			this._ageLabel.TabIndex = 10;
@@ -563,7 +588,7 @@
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(969, 677);
+			this.ClientSize = new System.Drawing.Size(969, 697);
 			this.Controls.Add(this._entryNewButton);
 			this.Controls.Add(this._treeGroupBox);
 			this.Controls.Add(this._menuPanel);
@@ -574,6 +599,7 @@
 			this._treeGroupBox.ResumeLayout(false);
 			this._editPanel.ResumeLayout(false);
 			this._editPanel.PerformLayout();
+			this._nodeBoxGroupBox.ResumeLayout(false);
 			this._requirementsGroupBox.ResumeLayout(false);
 			((System.ComponentModel.ISupportInitialize)(this._requirementsView)).EndInit();
 			this._civsGroupBox.ResumeLayout(false);
@@ -636,6 +662,8 @@
 		private System.Windows.Forms.ToolStripSeparator _entryContextMenuSeparator2;
 		private System.Windows.Forms.ToolStripMenuItem _entryDeleteMenuButton;
 		private System.Windows.Forms.Button _designFormButton;
+		private System.Windows.Forms.GroupBox _nodeBoxGroupBox;
+		private System.Windows.Forms.ComboBox _nodeBackgroundField;
 	}
 }
 

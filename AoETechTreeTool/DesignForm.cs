@@ -42,8 +42,9 @@ namespace AoETechTreeTool
 			// Create controls
 			InitializeComponent();
 
-			// Load existing design
-			SetDatFile(datFile);
+			// Load existing design, fill controls
+			_datFile=datFile;
+			RefillControlsFromData();
 		}
 
 		/// <summary>
@@ -97,27 +98,21 @@ namespace AoETechTreeTool
 			_nodeFontBox.Value = _datFile.TechTreeNew.DesignData.NodeFontIndex;
 
 			// Fill resolution list box
+			_resolutionListBox.Items.Clear();
 			foreach(var currRes in _datFile.TechTreeNew.DesignData.ResolutionData)
 				_resolutionListBox.Items.Add(currRes.Key);
+
+			// Fill node background list box
+			_nodeBackgroundsListBox.Items.Clear();
+			foreach(var currNB in _datFile.TechTreeNew.DesignData.NodeBackgrounds)
+				_nodeBackgroundsListBox.Items.Add(currNB);
 
 			// Updating finished
 			_updating = false;
 
-			// Select 0 element
+			// Select 0 elements
 			_resolutionListBox.SelectedItem = 0;
-		}
-
-		/// <summary>
-		/// Changes the underlying DAT file und refills the controls with its design data.
-		/// </summary>
-		/// <param name="datFile">The new DAT file to be edited.</param>
-		public void SetDatFile(GenieLibrary.GenieFile datFile)
-		{
-			// Remember DAT file
-			_datFile = datFile;
-
-			// Refill controls
-			RefillControlsFromData();
+			_nodeBackgroundsListBox.SelectedIndex = 0;
 		}
 
 		#endregion
@@ -466,6 +461,94 @@ namespace AoETechTreeTool
 				MessageBox.Show("Warning: There must be at least three age label rectangles!", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
 			if(_datFile.TechTreeNew.DesignData.ResolutionData[(int)_resolutionListBox.SelectedItem].VerticalDrawOffsets.Count < 2)
 				MessageBox.Show("Warning: There must be at least three age draw offsets!", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+		}
+
+		private void _nodeBackgroundIndexField_ValueChanged(object sender, EventArgs e)
+		{
+			// Updating
+			if(_updating)
+				return;
+			_updating = true;
+
+			// Fetch and update current element
+			TechTreeNew.TechTreeDesign.NodeBackground selectedNodeBackground = _datFile.TechTreeNew.DesignData.NodeBackgrounds[_nodeBackgroundsListBox.SelectedIndex];
+			selectedNodeBackground.FrameIndex = (int)_nodeBackgroundIndexField.Value;
+			_nodeBackgroundsListBox.Items[_nodeBackgroundsListBox.SelectedIndex] = selectedNodeBackground;
+
+			// Finished
+			_updating = false;
+		}
+
+		private void _nodeBackgroundNameBox_TextChanged(object sender, EventArgs e)
+		{
+			// Updating
+			if(_updating)
+				return;
+			_updating = true;
+
+			// Fetch and update current element
+			TechTreeNew.TechTreeDesign.NodeBackground selectedNodeBackground = _datFile.TechTreeNew.DesignData.NodeBackgrounds[_nodeBackgroundsListBox.SelectedIndex];
+			selectedNodeBackground.Name = _nodeBackgroundNameBox.Text;
+			_nodeBackgroundsListBox.Items[_nodeBackgroundsListBox.SelectedIndex] = selectedNodeBackground;
+
+			// Finished
+			_updating = false;
+		}
+
+		private void _nodeBackgroundsListBox_SelectedIndexChanged(object sender, EventArgs e)
+		{
+			// Prevent accidental changes
+			if(_updating)
+				return;
+			_updating = true;
+
+			// Select first item if none is selected
+			if(_nodeBackgroundsListBox.SelectedItem == null)
+				_nodeBackgroundsListBox.SelectedIndex = 0;
+
+			// Fill controls
+			TechTreeNew.TechTreeDesign.NodeBackground selectedNodeBackground = _datFile.TechTreeNew.DesignData.NodeBackgrounds[_nodeBackgroundsListBox.SelectedIndex];
+			_nodeBackgroundNameBox.Text = selectedNodeBackground.Name;
+			_nodeBackgroundIndexField.Value = selectedNodeBackground.FrameIndex;
+
+			// Finished
+			_updating = false;
+		}
+
+		private void _nodeBackgroundsListBox_Format(object sender, ListControlConvertEventArgs e)
+		{
+			// Display whole element data
+			var selectedNodeBackground = (TechTreeNew.TechTreeDesign.NodeBackground)e.ListItem;
+			if(e.DesiredType == typeof(string))
+				e.Value = $"[{_nodeBackgroundsListBox.Items.IndexOf(selectedNodeBackground)}] Frame {selectedNodeBackground.FrameIndex}: {selectedNodeBackground.Name}";
+		}
+
+		private void _addNodeBackgroundButton_Click(object sender, EventArgs e)
+		{
+			// Create new node background data object based on selected one
+			TechTreeNew.TechTreeDesign.NodeBackground selectedNodeBackground = _datFile.TechTreeNew.DesignData.NodeBackgrounds[_nodeBackgroundsListBox.SelectedIndex];
+			TechTreeNew.TechTreeDesign.NodeBackground newNodeBackground = new TechTreeNew.TechTreeDesign.NodeBackground()
+			{
+				Name = selectedNodeBackground.Name,
+				FrameIndex = selectedNodeBackground.FrameIndex
+			};
+
+			// Add object to list box and to internal list
+			_datFile.TechTreeNew.DesignData.NodeBackgrounds.Add(newNodeBackground);
+			_nodeBackgroundsListBox.Items.Add(newNodeBackground);
+			_nodeBackgroundsListBox.SelectedItem = newNodeBackground;
+		}
+
+		private void _deleteNodeBackgroundButton_Click(object sender, EventArgs e)
+		{
+			// Element selected?
+			// Also deny deletion if there are only three elements left
+			if(_nodeBackgroundsListBox.SelectedItems.Count == 0 || _nodeBackgroundsListBox.Items.Count <= 3)
+				return;
+
+			// Delete element
+			_datFile.TechTreeNew.DesignData.NodeBackgrounds.Remove((TechTreeNew.TechTreeDesign.NodeBackground)_nodeBackgroundsListBox.SelectedItem);
+			_nodeBackgroundsListBox.Items.Remove(_nodeBackgroundsListBox.SelectedItem);
 		}
 
 		#endregion

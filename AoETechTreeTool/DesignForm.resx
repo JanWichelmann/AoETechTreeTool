@@ -142,14 +142,31 @@ Frames:
   </data>
   <data name="_slpNodeBoxLabel.ToolTip" xml:space="preserve">
     <value>The background box of the element nodes (default ID is #53206).
-Frames:
+Default frames:
 0 - Building enabled (64x64)
 1 - Building disabled (64x64)
 2 - Unit enabled (64x64)
 3 - Unit disabled (64x64)
 4 - Research enabled (64x64)
-5 - Research disabled (64x64)
-6 - Disabled node overlay (1x1), transparent per default</value>
+5 - Research disabled (64x64)</value>
+  </data>
+  <data name="_nodeBackgroundsListBox.ToolTip" xml:space="preserve">
+    <value>The different node backgrounds. Their index [*] is their ID at the same time, so the order is important.
+Restrictions:
+- [0] should always be Research
+- [1] should always be Unit
+- [2] should always be Building</value>
+  </data>
+  <data name="_nodeBackgroundIndexLabel.ToolTip" xml:space="preserve">
+    <value>The index of the first background frame associated to the current node background setting, in the node box SLP.
+Each node background should have two consecutive frames, the first one for enabled nodes, the second one for disabled nodes.
+Default frames:
+0 - Building enabled (64x64) -&gt; "Building"
+1 - Building disabled (64x64)
+2 - Unit enabled (64x64) -&gt; "Unit"
+3 - Unit disabled (64x64)
+4 - Research enabled (64x64) -&gt; "Research"
+5 - Research disabled (64x64)</value>
   </data>
   <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   <data name="$this.Icon" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">

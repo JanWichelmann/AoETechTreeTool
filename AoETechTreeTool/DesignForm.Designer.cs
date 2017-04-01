@@ -68,6 +68,11 @@
 			this._scrollRightButtonLabel = new System.Windows.Forms.Label();
 			this._scrollLeftButtonLabel = new System.Windows.Forms.Label();
 			this._closeButtonLabel = new System.Windows.Forms.Label();
+			this._nodeBackgroundsListBox = new System.Windows.Forms.ListBox();
+			this._addNodeBackgroundButton = new System.Windows.Forms.Button();
+			this._deleteNodeBackgroundButton = new System.Windows.Forms.Button();
+			this._nodeBackgroundNameLabel = new System.Windows.Forms.Label();
+			this._nodeBackgroundIndexLabel = new System.Windows.Forms.Label();
 			this._scrollSettingsGroupBox = new System.Windows.Forms.GroupBox();
 			this._keyboardScrollAmountBox = new System.Windows.Forms.NumericUpDown();
 			this._mouseScrollAmountBox = new System.Windows.Forms.NumericUpDown();
@@ -103,11 +108,13 @@
 			this._popupWidthBox = new System.Windows.Forms.NumericUpDown();
 			this._popupDelayLabel = new System.Windows.Forms.Label();
 			this._popupDelayBox = new System.Windows.Forms.NumericUpDown();
-			this._otherSettingsGroupBox = new System.Windows.Forms.GroupBox();
 			this._nodeFontBox = new System.Windows.Forms.NumericUpDown();
 			this._resolutionSettingsGroupBox = new System.Windows.Forms.GroupBox();
-			this._minimumResolutionBox = new System.Windows.Forms.NumericUpDown();
 			this._resolutionSettingsGrid = new System.Windows.Forms.PropertyGrid();
+			this._minimumResolutionBox = new System.Windows.Forms.NumericUpDown();
+			this._nodeSettingsGroupBox = new System.Windows.Forms.GroupBox();
+			this._nodeBackgroundNameBox = new System.Windows.Forms.TextBox();
+			this._nodeBackgroundIndexField = new System.Windows.Forms.NumericUpDown();
 			this._menuPanel.SuspendLayout();
 			this._slpGroupBox.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this._slpLegendDisabledIdBox)).BeginInit();
@@ -143,10 +150,11 @@
 			((System.ComponentModel.ISupportInitialize)(this._popupBoxPaddingBox)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this._popupWidthBox)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this._popupDelayBox)).BeginInit();
-			this._otherSettingsGroupBox.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this._nodeFontBox)).BeginInit();
 			this._resolutionSettingsGroupBox.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this._minimumResolutionBox)).BeginInit();
+			this._nodeSettingsGroupBox.SuspendLayout();
+			((System.ComponentModel.ISupportInitialize)(this._nodeBackgroundIndexField)).BeginInit();
 			this.SuspendLayout();
 			// 
 			// _menuPanel
@@ -156,7 +164,7 @@
 			this._menuPanel.Dock = System.Windows.Forms.DockStyle.Top;
 			this._menuPanel.Location = new System.Drawing.Point(0, 0);
 			this._menuPanel.Name = "_menuPanel";
-			this._menuPanel.Size = new System.Drawing.Size(901, 44);
+			this._menuPanel.Size = new System.Drawing.Size(963, 44);
 			this._menuPanel.TabIndex = 7;
 			// 
 			// _importDesignButton
@@ -210,14 +218,14 @@
 			this._slpGroupBox.Controls.Add(this._slpNodeBoxLabel);
 			this._slpGroupBox.Location = new System.Drawing.Point(8, 51);
 			this._slpGroupBox.Name = "_slpGroupBox";
-			this._slpGroupBox.Size = new System.Drawing.Size(390, 165);
+			this._slpGroupBox.Size = new System.Drawing.Size(399, 165);
 			this._slpGroupBox.TabIndex = 8;
 			this._slpGroupBox.TabStop = false;
 			this._slpGroupBox.Text = "SLPs";
 			// 
 			// _slpLegendDisabledIdBox
 			// 
-			this._slpLegendDisabledIdBox.Location = new System.Drawing.Point(303, 136);
+			this._slpLegendDisabledIdBox.Location = new System.Drawing.Point(312, 136);
 			this._slpLegendDisabledIdBox.Maximum = new decimal(new int[] {
             2147483647,
             0,
@@ -237,7 +245,7 @@
 			// 
 			this._slpLegendDisabledNameBox.Location = new System.Drawing.Point(105, 136);
 			this._slpLegendDisabledNameBox.Name = "_slpLegendDisabledNameBox";
-			this._slpLegendDisabledNameBox.Size = new System.Drawing.Size(192, 20);
+			this._slpLegendDisabledNameBox.Size = new System.Drawing.Size(201, 20);
 			this._slpLegendDisabledNameBox.TabIndex = 15;
 			this._slpLegendDisabledNameBox.TextChanged += new System.EventHandler(this._slpLegendDisabledNameBox_TextChanged);
 			// 
@@ -253,7 +261,7 @@
 			// 
 			// _slpLegendAndAgesIdBox
 			// 
-			this._slpLegendAndAgesIdBox.Location = new System.Drawing.Point(303, 110);
+			this._slpLegendAndAgesIdBox.Location = new System.Drawing.Point(312, 110);
 			this._slpLegendAndAgesIdBox.Maximum = new decimal(new int[] {
             2147483647,
             0,
@@ -273,7 +281,7 @@
 			// 
 			this._slpLegendAndAgesNameBox.Location = new System.Drawing.Point(105, 110);
 			this._slpLegendAndAgesNameBox.Name = "_slpLegendAndAgesNameBox";
-			this._slpLegendAndAgesNameBox.Size = new System.Drawing.Size(192, 20);
+			this._slpLegendAndAgesNameBox.Size = new System.Drawing.Size(201, 20);
 			this._slpLegendAndAgesNameBox.TabIndex = 12;
 			this._slpLegendAndAgesNameBox.TextChanged += new System.EventHandler(this._slpLegendAndAgesNameBox_TextChanged);
 			// 
@@ -289,7 +297,7 @@
 			// 
 			// _slpBackgroundTileIdBox
 			// 
-			this._slpBackgroundTileIdBox.Location = new System.Drawing.Point(303, 84);
+			this._slpBackgroundTileIdBox.Location = new System.Drawing.Point(312, 84);
 			this._slpBackgroundTileIdBox.Maximum = new decimal(new int[] {
             2147483647,
             0,
@@ -309,7 +317,7 @@
 			// 
 			this._slpBackgroundTileNameBox.Location = new System.Drawing.Point(105, 84);
 			this._slpBackgroundTileNameBox.Name = "_slpBackgroundTileNameBox";
-			this._slpBackgroundTileNameBox.Size = new System.Drawing.Size(192, 20);
+			this._slpBackgroundTileNameBox.Size = new System.Drawing.Size(201, 20);
 			this._slpBackgroundTileNameBox.TabIndex = 9;
 			this._slpBackgroundTileNameBox.TextChanged += new System.EventHandler(this._slpBackgroundTileNameBox_TextChanged);
 			// 
@@ -326,7 +334,7 @@
 			// 
 			// _slpArrowButtonIdBox
 			// 
-			this._slpArrowButtonIdBox.Location = new System.Drawing.Point(303, 58);
+			this._slpArrowButtonIdBox.Location = new System.Drawing.Point(312, 58);
 			this._slpArrowButtonIdBox.Maximum = new decimal(new int[] {
             2147483647,
             0,
@@ -346,7 +354,7 @@
 			// 
 			this._slpArrowButtonNameBox.Location = new System.Drawing.Point(105, 58);
 			this._slpArrowButtonNameBox.Name = "_slpArrowButtonNameBox";
-			this._slpArrowButtonNameBox.Size = new System.Drawing.Size(192, 20);
+			this._slpArrowButtonNameBox.Size = new System.Drawing.Size(201, 20);
 			this._slpArrowButtonNameBox.TabIndex = 6;
 			this._slpArrowButtonNameBox.TextChanged += new System.EventHandler(this._slpArrowButtonNameBox_TextChanged);
 			// 
@@ -363,7 +371,7 @@
 			// 
 			// _slpNodeBoxIdBox
 			// 
-			this._slpNodeBoxIdBox.Location = new System.Drawing.Point(303, 32);
+			this._slpNodeBoxIdBox.Location = new System.Drawing.Point(312, 32);
 			this._slpNodeBoxIdBox.Maximum = new decimal(new int[] {
             2147483647,
             0,
@@ -382,7 +390,7 @@
 			// label3
 			// 
 			this.label3.AutoSize = true;
-			this.label3.Location = new System.Drawing.Point(337, 14);
+			this.label3.Location = new System.Drawing.Point(342, 14);
 			this.label3.Name = "label3";
 			this.label3.Size = new System.Drawing.Size(18, 13);
 			this.label3.TabIndex = 3;
@@ -405,7 +413,7 @@
 			// 
 			this._slpNodeBoxNameBox.Location = new System.Drawing.Point(105, 32);
 			this._slpNodeBoxNameBox.Name = "_slpNodeBoxNameBox";
-			this._slpNodeBoxNameBox.Size = new System.Drawing.Size(192, 20);
+			this._slpNodeBoxNameBox.Size = new System.Drawing.Size(201, 20);
 			this._slpNodeBoxNameBox.TabIndex = 1;
 			this._slpNodeBoxNameBox.TextChanged += new System.EventHandler(this._slpNodeBoxNameBox_TextChanged);
 			// 
@@ -472,7 +480,7 @@
 			// 
 			// _popupBevelDrawPanel
 			// 
-			this._popupBevelDrawPanel.Location = new System.Drawing.Point(12, 129);
+			this._popupBevelDrawPanel.Location = new System.Drawing.Point(14, 129);
 			this._popupBevelDrawPanel.Name = "_popupBevelDrawPanel";
 			this._popupBevelDrawPanel.Size = new System.Drawing.Size(32, 32);
 			this._popupBevelDrawPanel.TabIndex = 12;
@@ -481,20 +489,20 @@
 			// _nodeFontLabel
 			// 
 			this._nodeFontLabel.AutoSize = true;
-			this._nodeFontLabel.Location = new System.Drawing.Point(6, 21);
+			this._nodeFontLabel.Location = new System.Drawing.Point(6, 171);
 			this._nodeFontLabel.Name = "_nodeFontLabel";
 			this._nodeFontLabel.Size = new System.Drawing.Size(85, 13);
 			this._nodeFontLabel.TabIndex = 0;
-			this._nodeFontLabel.Text = "Node font index:";
+			this._nodeFontLabel.Text = "Label font index:";
 			this._infoToolTip.SetToolTip(this._nodeFontLabel, "The internal index of the font used for the node names (default is 12).\r\nMay lead" +
         " to crashes - change only if you know what you are doing!");
 			// 
 			// _resolutionListBox
 			// 
 			this._resolutionListBox.FormattingEnabled = true;
-			this._resolutionListBox.Location = new System.Drawing.Point(6, 19);
+			this._resolutionListBox.Location = new System.Drawing.Point(221, 18);
 			this._resolutionListBox.Name = "_resolutionListBox";
-			this._resolutionListBox.Size = new System.Drawing.Size(124, 407);
+			this._resolutionListBox.Size = new System.Drawing.Size(134, 56);
 			this._resolutionListBox.TabIndex = 0;
 			this._infoToolTip.SetToolTip(this._resolutionListBox, "The different resolutions (defined by the minimum heights).\r\nThe settings of the " +
         "resolution with the minimum height nearest to (and smaller than) the real height" +
@@ -504,7 +512,7 @@
 			// _addResolutionButton
 			// 
 			this._addResolutionButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this._addResolutionButton.Location = new System.Drawing.Point(6, 436);
+			this._addResolutionButton.Location = new System.Drawing.Point(156, 17);
 			this._addResolutionButton.Name = "_addResolutionButton";
 			this._addResolutionButton.Size = new System.Drawing.Size(59, 23);
 			this._addResolutionButton.TabIndex = 1;
@@ -516,19 +524,19 @@
 			// _deleteResolutionButton
 			// 
 			this._deleteResolutionButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this._deleteResolutionButton.Location = new System.Drawing.Point(71, 436);
+			this._deleteResolutionButton.Location = new System.Drawing.Point(361, 17);
 			this._deleteResolutionButton.Name = "_deleteResolutionButton";
 			this._deleteResolutionButton.Size = new System.Drawing.Size(59, 23);
 			this._deleteResolutionButton.TabIndex = 2;
 			this._deleteResolutionButton.Text = "delete";
-			this._infoToolTip.SetToolTip(this._deleteResolutionButton, "Adds a new resolution setting.");
+			this._infoToolTip.SetToolTip(this._deleteResolutionButton, "Deletes a resolution setting.");
 			this._deleteResolutionButton.UseVisualStyleBackColor = true;
 			this._deleteResolutionButton.Click += new System.EventHandler(this._deleteResolutionButton_Click);
 			// 
 			// _minimumResolutionLabel
 			// 
 			this._minimumResolutionLabel.AutoSize = true;
-			this._minimumResolutionLabel.Location = new System.Drawing.Point(136, 22);
+			this._minimumResolutionLabel.Location = new System.Drawing.Point(2, 21);
 			this._minimumResolutionLabel.Name = "_minimumResolutionLabel";
 			this._minimumResolutionLabel.Size = new System.Drawing.Size(83, 13);
 			this._minimumResolutionLabel.TabIndex = 4;
@@ -567,6 +575,61 @@
 			this._closeButtonLabel.Text = "Close button:";
 			this._infoToolTip.SetToolTip(this._closeButtonLabel, "The position of the close button relative to the bottom right corner of the scree" +
         "n.");
+			// 
+			// _nodeBackgroundsListBox
+			// 
+			this._nodeBackgroundsListBox.FormattingEnabled = true;
+			this._nodeBackgroundsListBox.Location = new System.Drawing.Point(9, 71);
+			this._nodeBackgroundsListBox.Name = "_nodeBackgroundsListBox";
+			this._nodeBackgroundsListBox.Size = new System.Drawing.Size(289, 95);
+			this._nodeBackgroundsListBox.TabIndex = 6;
+			this._infoToolTip.SetToolTip(this._nodeBackgroundsListBox, resources.GetString("_nodeBackgroundsListBox.ToolTip"));
+			this._nodeBackgroundsListBox.SelectedIndexChanged += new System.EventHandler(this._nodeBackgroundsListBox_SelectedIndexChanged);
+			this._nodeBackgroundsListBox.Format += new System.Windows.Forms.ListControlConvertEventHandler(this._nodeBackgroundsListBox_Format);
+			// 
+			// _addNodeBackgroundButton
+			// 
+			this._addNodeBackgroundButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this._addNodeBackgroundButton.Location = new System.Drawing.Point(183, 19);
+			this._addNodeBackgroundButton.Name = "_addNodeBackgroundButton";
+			this._addNodeBackgroundButton.Size = new System.Drawing.Size(55, 22);
+			this._addNodeBackgroundButton.TabIndex = 20;
+			this._addNodeBackgroundButton.Text = "add";
+			this._infoToolTip.SetToolTip(this._addNodeBackgroundButton, "Adds a new node background setting.");
+			this._addNodeBackgroundButton.UseVisualStyleBackColor = true;
+			this._addNodeBackgroundButton.Click += new System.EventHandler(this._addNodeBackgroundButton_Click);
+			// 
+			// _deleteNodeBackgroundButton
+			// 
+			this._deleteNodeBackgroundButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this._deleteNodeBackgroundButton.Location = new System.Drawing.Point(244, 19);
+			this._deleteNodeBackgroundButton.Name = "_deleteNodeBackgroundButton";
+			this._deleteNodeBackgroundButton.Size = new System.Drawing.Size(55, 22);
+			this._deleteNodeBackgroundButton.TabIndex = 21;
+			this._deleteNodeBackgroundButton.Text = "delete";
+			this._infoToolTip.SetToolTip(this._deleteNodeBackgroundButton, "Deletes a node background setting.");
+			this._deleteNodeBackgroundButton.UseVisualStyleBackColor = true;
+			this._deleteNodeBackgroundButton.Click += new System.EventHandler(this._deleteNodeBackgroundButton_Click);
+			// 
+			// _nodeBackgroundNameLabel
+			// 
+			this._nodeBackgroundNameLabel.AutoSize = true;
+			this._nodeBackgroundNameLabel.Location = new System.Drawing.Point(6, 48);
+			this._nodeBackgroundNameLabel.Name = "_nodeBackgroundNameLabel";
+			this._nodeBackgroundNameLabel.Size = new System.Drawing.Size(97, 13);
+			this._nodeBackgroundNameLabel.TabIndex = 18;
+			this._nodeBackgroundNameLabel.Text = "Background name:";
+			this._infoToolTip.SetToolTip(this._nodeBackgroundNameLabel, "The name of the background setting. Only for display in this editor.");
+			// 
+			// _nodeBackgroundIndexLabel
+			// 
+			this._nodeBackgroundIndexLabel.AutoSize = true;
+			this._nodeBackgroundIndexLabel.Location = new System.Drawing.Point(6, 22);
+			this._nodeBackgroundIndexLabel.Name = "_nodeBackgroundIndexLabel";
+			this._nodeBackgroundIndexLabel.Size = new System.Drawing.Size(125, 13);
+			this._nodeBackgroundIndexLabel.TabIndex = 2;
+			this._nodeBackgroundIndexLabel.Text = "Background frame index:";
+			this._infoToolTip.SetToolTip(this._nodeBackgroundIndexLabel, resources.GetString("_nodeBackgroundIndexLabel.ToolTip"));
 			// 
 			// _scrollSettingsGroupBox
 			// 
@@ -698,7 +761,7 @@
 			this._buttonRectanglesGroupBox.Controls.Add(this._closeButtonHeightBox);
 			this._buttonRectanglesGroupBox.Controls.Add(this._closeButtonWidthBox);
 			this._buttonRectanglesGroupBox.Controls.Add(this._closeButtonYBox);
-			this._buttonRectanglesGroupBox.Location = new System.Drawing.Point(8, 409);
+			this._buttonRectanglesGroupBox.Location = new System.Drawing.Point(214, 423);
 			this._buttonRectanglesGroupBox.Name = "_buttonRectanglesGroupBox";
 			this._buttonRectanglesGroupBox.Size = new System.Drawing.Size(307, 113);
 			this._buttonRectanglesGroupBox.TabIndex = 10;
@@ -913,16 +976,16 @@
 			this._popupBoxGroupBox.Controls.Add(this._popupWidthBox);
 			this._popupBoxGroupBox.Controls.Add(this._popupDelayLabel);
 			this._popupBoxGroupBox.Controls.Add(this._popupDelayBox);
-			this._popupBoxGroupBox.Location = new System.Drawing.Point(214, 222);
+			this._popupBoxGroupBox.Location = new System.Drawing.Point(8, 355);
 			this._popupBoxGroupBox.Name = "_popupBoxGroupBox";
-			this._popupBoxGroupBox.Size = new System.Drawing.Size(184, 181);
+			this._popupBoxGroupBox.Size = new System.Drawing.Size(200, 181);
 			this._popupBoxGroupBox.TabIndex = 11;
 			this._popupBoxGroupBox.TabStop = false;
 			this._popupBoxGroupBox.Text = "Popup box settings";
 			// 
 			// _popupBevel2Box
 			// 
-			this._popupBevel2Box.Location = new System.Drawing.Point(100, 121);
+			this._popupBevel2Box.Location = new System.Drawing.Point(102, 121);
 			this._popupBevel2Box.Maximum = new decimal(new int[] {
             255,
             0,
@@ -940,7 +1003,7 @@
 			// 
 			// _popupBevel3Box
 			// 
-			this._popupBevel3Box.Location = new System.Drawing.Point(145, 121);
+			this._popupBevel3Box.Location = new System.Drawing.Point(147, 121);
 			this._popupBevel3Box.Maximum = new decimal(new int[] {
             255,
             0,
@@ -958,7 +1021,7 @@
 			// 
 			// _popupBevel4Box
 			// 
-			this._popupBevel4Box.Location = new System.Drawing.Point(55, 147);
+			this._popupBevel4Box.Location = new System.Drawing.Point(57, 147);
 			this._popupBevel4Box.Maximum = new decimal(new int[] {
             255,
             0,
@@ -976,7 +1039,7 @@
 			// 
 			// _popupBevel5Box
 			// 
-			this._popupBevel5Box.Location = new System.Drawing.Point(100, 147);
+			this._popupBevel5Box.Location = new System.Drawing.Point(102, 147);
 			this._popupBevel5Box.Maximum = new decimal(new int[] {
             255,
             0,
@@ -994,7 +1057,7 @@
 			// 
 			// _popupBevel6Box
 			// 
-			this._popupBevel6Box.Location = new System.Drawing.Point(145, 147);
+			this._popupBevel6Box.Location = new System.Drawing.Point(147, 147);
 			this._popupBevel6Box.Maximum = new decimal(new int[] {
             255,
             0,
@@ -1012,7 +1075,7 @@
 			// 
 			// _popupBevel1Box
 			// 
-			this._popupBevel1Box.Location = new System.Drawing.Point(55, 121);
+			this._popupBevel1Box.Location = new System.Drawing.Point(57, 121);
 			this._popupBevel1Box.Maximum = new decimal(new int[] {
             255,
             0,
@@ -1051,7 +1114,7 @@
             0,
             0});
 			this._popupBoxPaddingBox.Name = "_popupBoxPaddingBox";
-			this._popupBoxPaddingBox.Size = new System.Drawing.Size(44, 20);
+			this._popupBoxPaddingBox.Size = new System.Drawing.Size(51, 20);
 			this._popupBoxPaddingBox.TabIndex = 4;
 			this._popupBoxPaddingBox.Value = new decimal(new int[] {
             1,
@@ -1083,7 +1146,7 @@
             0,
             0});
 			this._popupWidthBox.Name = "_popupWidthBox";
-			this._popupWidthBox.Size = new System.Drawing.Size(44, 20);
+			this._popupWidthBox.Size = new System.Drawing.Size(51, 20);
 			this._popupWidthBox.TabIndex = 2;
 			this._popupWidthBox.Value = new decimal(new int[] {
             1,
@@ -1115,7 +1178,7 @@
             0,
             0});
 			this._popupDelayBox.Name = "_popupDelayBox";
-			this._popupDelayBox.Size = new System.Drawing.Size(44, 20);
+			this._popupDelayBox.Size = new System.Drawing.Size(51, 20);
 			this._popupDelayBox.TabIndex = 0;
 			this._popupDelayBox.Value = new decimal(new int[] {
             1,
@@ -1124,20 +1187,9 @@
             0});
 			this._popupDelayBox.ValueChanged += new System.EventHandler(this._popupDelayBox_ValueChanged);
 			// 
-			// _otherSettingsGroupBox
-			// 
-			this._otherSettingsGroupBox.Controls.Add(this._nodeFontBox);
-			this._otherSettingsGroupBox.Controls.Add(this._nodeFontLabel);
-			this._otherSettingsGroupBox.Location = new System.Drawing.Point(8, 355);
-			this._otherSettingsGroupBox.Name = "_otherSettingsGroupBox";
-			this._otherSettingsGroupBox.Size = new System.Drawing.Size(200, 48);
-			this._otherSettingsGroupBox.TabIndex = 12;
-			this._otherSettingsGroupBox.TabStop = false;
-			this._otherSettingsGroupBox.Text = "Other settings";
-			// 
 			// _nodeFontBox
 			// 
-			this._nodeFontBox.Location = new System.Drawing.Point(152, 19);
+			this._nodeFontBox.Location = new System.Drawing.Point(97, 169);
 			this._nodeFontBox.Maximum = new decimal(new int[] {
             255,
             0,
@@ -1155,22 +1207,31 @@
 			// 
 			// _resolutionSettingsGroupBox
 			// 
+			this._resolutionSettingsGroupBox.Controls.Add(this._resolutionListBox);
+			this._resolutionSettingsGroupBox.Controls.Add(this._deleteResolutionButton);
+			this._resolutionSettingsGroupBox.Controls.Add(this._resolutionSettingsGrid);
 			this._resolutionSettingsGroupBox.Controls.Add(this._minimumResolutionBox);
 			this._resolutionSettingsGroupBox.Controls.Add(this._minimumResolutionLabel);
-			this._resolutionSettingsGroupBox.Controls.Add(this._resolutionSettingsGrid);
-			this._resolutionSettingsGroupBox.Controls.Add(this._deleteResolutionButton);
 			this._resolutionSettingsGroupBox.Controls.Add(this._addResolutionButton);
-			this._resolutionSettingsGroupBox.Controls.Add(this._resolutionListBox);
-			this._resolutionSettingsGroupBox.Location = new System.Drawing.Point(404, 51);
+			this._resolutionSettingsGroupBox.Location = new System.Drawing.Point(527, 51);
 			this._resolutionSettingsGroupBox.Name = "_resolutionSettingsGroupBox";
-			this._resolutionSettingsGroupBox.Size = new System.Drawing.Size(488, 471);
+			this._resolutionSettingsGroupBox.Size = new System.Drawing.Size(426, 485);
 			this._resolutionSettingsGroupBox.TabIndex = 13;
 			this._resolutionSettingsGroupBox.TabStop = false;
 			this._resolutionSettingsGroupBox.Text = "Resolution settings";
 			// 
+			// _resolutionSettingsGrid
+			// 
+			this._resolutionSettingsGrid.Location = new System.Drawing.Point(5, 49);
+			this._resolutionSettingsGrid.Name = "_resolutionSettingsGrid";
+			this._resolutionSettingsGrid.Size = new System.Drawing.Size(415, 430);
+			this._resolutionSettingsGrid.TabIndex = 3;
+			this._resolutionSettingsGrid.PropertyValueChanged += new System.Windows.Forms.PropertyValueChangedEventHandler(this._resolutionSettingsGrid_PropertyValueChanged);
+			this._resolutionSettingsGrid.Leave += new System.EventHandler(this._resolutionSettingsGrid_Leave);
+			// 
 			// _minimumResolutionBox
 			// 
-			this._minimumResolutionBox.Location = new System.Drawing.Point(225, 20);
+			this._minimumResolutionBox.Location = new System.Drawing.Point(91, 19);
 			this._minimumResolutionBox.Maximum = new decimal(new int[] {
             9999,
             0,
@@ -1186,22 +1247,62 @@
             0});
 			this._minimumResolutionBox.ValueChanged += new System.EventHandler(this._minimumResolutionBox_ValueChanged);
 			// 
-			// _resolutionSettingsGrid
+			// _nodeSettingsGroupBox
 			// 
-			this._resolutionSettingsGrid.Location = new System.Drawing.Point(136, 46);
-			this._resolutionSettingsGrid.Name = "_resolutionSettingsGrid";
-			this._resolutionSettingsGrid.Size = new System.Drawing.Size(346, 416);
-			this._resolutionSettingsGrid.TabIndex = 3;
-			this._resolutionSettingsGrid.PropertyValueChanged += new System.Windows.Forms.PropertyValueChangedEventHandler(this._resolutionSettingsGrid_PropertyValueChanged);
-			this._resolutionSettingsGrid.Leave += new System.EventHandler(this._resolutionSettingsGrid_Leave);
+			this._nodeSettingsGroupBox.Controls.Add(this._deleteNodeBackgroundButton);
+			this._nodeSettingsGroupBox.Controls.Add(this._addNodeBackgroundButton);
+			this._nodeSettingsGroupBox.Controls.Add(this._nodeBackgroundsListBox);
+			this._nodeSettingsGroupBox.Controls.Add(this._nodeBackgroundNameBox);
+			this._nodeSettingsGroupBox.Controls.Add(this._nodeBackgroundNameLabel);
+			this._nodeSettingsGroupBox.Controls.Add(this._nodeBackgroundIndexField);
+			this._nodeSettingsGroupBox.Controls.Add(this._nodeBackgroundIndexLabel);
+			this._nodeSettingsGroupBox.Controls.Add(this._nodeFontBox);
+			this._nodeSettingsGroupBox.Controls.Add(this._nodeFontLabel);
+			this._nodeSettingsGroupBox.Location = new System.Drawing.Point(214, 222);
+			this._nodeSettingsGroupBox.Name = "_nodeSettingsGroupBox";
+			this._nodeSettingsGroupBox.Size = new System.Drawing.Size(307, 195);
+			this._nodeSettingsGroupBox.TabIndex = 14;
+			this._nodeSettingsGroupBox.TabStop = false;
+			this._nodeSettingsGroupBox.Text = "Node settings";
+			// 
+			// _nodeBackgroundNameBox
+			// 
+			this._nodeBackgroundNameBox.Location = new System.Drawing.Point(109, 45);
+			this._nodeBackgroundNameBox.Name = "_nodeBackgroundNameBox";
+			this._nodeBackgroundNameBox.Size = new System.Drawing.Size(189, 20);
+			this._nodeBackgroundNameBox.TabIndex = 19;
+			this._nodeBackgroundNameBox.TextChanged += new System.EventHandler(this._nodeBackgroundNameBox_TextChanged);
+			// 
+			// _nodeBackgroundIndexField
+			// 
+			this._nodeBackgroundIndexField.Location = new System.Drawing.Point(137, 20);
+			this._nodeBackgroundIndexField.Maximum = new decimal(new int[] {
+            999,
+            0,
+            0,
+            0});
+			this._nodeBackgroundIndexField.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            -2147483648});
+			this._nodeBackgroundIndexField.Name = "_nodeBackgroundIndexField";
+			this._nodeBackgroundIndexField.Size = new System.Drawing.Size(39, 20);
+			this._nodeBackgroundIndexField.TabIndex = 17;
+			this._nodeBackgroundIndexField.Value = new decimal(new int[] {
+            999,
+            0,
+            0,
+            0});
+			this._nodeBackgroundIndexField.ValueChanged += new System.EventHandler(this._nodeBackgroundIndexField_ValueChanged);
 			// 
 			// DesignForm
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(901, 530);
+			this.ClientSize = new System.Drawing.Size(963, 543);
+			this.Controls.Add(this._nodeSettingsGroupBox);
 			this.Controls.Add(this._resolutionSettingsGroupBox);
-			this.Controls.Add(this._otherSettingsGroupBox);
 			this.Controls.Add(this._popupBoxGroupBox);
 			this.Controls.Add(this._buttonRectanglesGroupBox);
 			this.Controls.Add(this._scrollSettingsGroupBox);
@@ -1252,12 +1353,13 @@
 			((System.ComponentModel.ISupportInitialize)(this._popupBoxPaddingBox)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this._popupWidthBox)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this._popupDelayBox)).EndInit();
-			this._otherSettingsGroupBox.ResumeLayout(false);
-			this._otherSettingsGroupBox.PerformLayout();
 			((System.ComponentModel.ISupportInitialize)(this._nodeFontBox)).EndInit();
 			this._resolutionSettingsGroupBox.ResumeLayout(false);
 			this._resolutionSettingsGroupBox.PerformLayout();
 			((System.ComponentModel.ISupportInitialize)(this._minimumResolutionBox)).EndInit();
+			this._nodeSettingsGroupBox.ResumeLayout(false);
+			this._nodeSettingsGroupBox.PerformLayout();
+			((System.ComponentModel.ISupportInitialize)(this._nodeBackgroundIndexField)).EndInit();
 			this.ResumeLayout(false);
 
 		}
@@ -1332,7 +1434,6 @@
 		private System.Windows.Forms.NumericUpDown _popupBevel6Box;
 		private System.Windows.Forms.NumericUpDown _popupBevel1Box;
 		private System.Windows.Forms.Panel _popupBevelDrawPanel;
-		private System.Windows.Forms.GroupBox _otherSettingsGroupBox;
 		private System.Windows.Forms.NumericUpDown _nodeFontBox;
 		private System.Windows.Forms.Label _nodeFontLabel;
 		private System.Windows.Forms.GroupBox _resolutionSettingsGroupBox;
@@ -1342,5 +1443,13 @@
 		private System.Windows.Forms.PropertyGrid _resolutionSettingsGrid;
 		private System.Windows.Forms.NumericUpDown _minimumResolutionBox;
 		private System.Windows.Forms.Label _minimumResolutionLabel;
+		private System.Windows.Forms.GroupBox _nodeSettingsGroupBox;
+		private System.Windows.Forms.Label _nodeBackgroundIndexLabel;
+		private System.Windows.Forms.Label _nodeBackgroundNameLabel;
+		private System.Windows.Forms.NumericUpDown _nodeBackgroundIndexField;
+		private System.Windows.Forms.TextBox _nodeBackgroundNameBox;
+		private System.Windows.Forms.ListBox _nodeBackgroundsListBox;
+		private System.Windows.Forms.Button _addNodeBackgroundButton;
+		private System.Windows.Forms.Button _deleteNodeBackgroundButton;
 	}
 }

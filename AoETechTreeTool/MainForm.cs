@@ -51,11 +51,6 @@ namespace AoETechTreeTool
 		/// </summary>
 		private TreeNode _lastDragDropCandidateNode = null;
 
-		/// <summary>
-		/// The design form.
-		/// </summary>
-		private DesignForm _designForm = null;
-
 		#endregion Variables
 
 		#region Functions
@@ -108,7 +103,7 @@ namespace AoETechTreeTool
 
 				// Load default design data
 				_datFile.TechTreeNew.DesignData.ReadData(new IORAMHelper.RAMBuffer(Properties.Resources.DefaultDesignData));
-            }
+			}
 
 			// Run recursively through elements and create nodes
 			Func<TechTreeNew.TechTreeElement, TreeNode> recursiveTreeViewFill = null;
@@ -350,14 +345,14 @@ namespace AoETechTreeTool
 			// Update tree view
 			RefillTreeView();
 
-			// Update design window, if open
-			if(_designForm != null)
-				_designForm.SetDatFile(_datFile);
-
 			// Fill civ list box
 			_civsList.Items.Clear();
 			for(byte i = 1; i < _datFile.Civs.Count; ++i)
 				_civsList.Items.Add(new KeyValuePair<byte, string>(i, _datFile.Civs[i].Name.Trim()));
+
+			// Fill node background list box
+			_nodeBackgroundField.Items.Clear();
+			_datFile.TechTreeNew.DesignData.NodeBackgrounds.ForEach(n => _nodeBackgroundField.Items.Add($"{n.Name}"));
 		}
 
 		private void _saveDataButton_Click(object sender, EventArgs e)
@@ -481,6 +476,10 @@ namespace AoETechTreeTool
 					_requirementsView.Rows.Add("Unit", req.Item2.ToString());
 				else
 					_requirementsView.Rows.Add("Research", req.Item2.ToString());
+			if(_selectedElement.NodeBackgroundIndex < _nodeBackgroundField.Items.Count)
+				_nodeBackgroundField.SelectedIndex = _selectedElement.NodeBackgroundIndex;
+			else
+				_nodeBackgroundField.SelectedIndex = _selectedElement.NodeBackgroundIndex = (int)_selectedElement.ElementType;
 			_entryContextMenu.Tag = e.Node;
 
 			// Update civs
@@ -662,6 +661,10 @@ namespace AoETechTreeTool
 			if(_updating)
 				return;
 
+			// Update item background index, if default one is selected
+			if(_nodeBackgroundField.SelectedIndex == (int)_selectedElement.ElementType)
+				_nodeBackgroundField.SelectedIndex = (int)TechTreeNew.TechTreeElement.ItemType.Creatable;
+
 			// Change item type
 			if(_typeUnitButton.Checked)
 				_selectedElement.ElementType = TechTreeNew.TechTreeElement.ItemType.Creatable;
@@ -676,6 +679,10 @@ namespace AoETechTreeTool
 			if(_updating)
 				return;
 
+			// Update item background index, if default one is selected
+			if(_nodeBackgroundField.SelectedIndex == (int)_selectedElement.ElementType)
+				_nodeBackgroundField.SelectedIndex = (int)TechTreeNew.TechTreeElement.ItemType.Building;
+
 			// Change item type
 			if(_typeBuildingButton.Checked)
 				_selectedElement.ElementType = TechTreeNew.TechTreeElement.ItemType.Building;
@@ -689,6 +696,10 @@ namespace AoETechTreeTool
 			// Updating?
 			if(_updating)
 				return;
+
+			// Update item background index, if default one is selected
+			if(_nodeBackgroundField.SelectedIndex == (int)_selectedElement.ElementType)
+				_nodeBackgroundField.SelectedIndex = (int)TechTreeNew.TechTreeElement.ItemType.Research;
 
 			// Change item type
 			if(_typeResearchButton.Checked)
@@ -862,6 +873,10 @@ namespace AoETechTreeTool
 			// Is a tree node dragged?
 			if(e.Data.GetDataPresent("System.Windows.Forms.TreeNode", false))
 			{
+				// HACK (see _treeView_QueryContinueDrag()) Reset color of hovered tree node
+				if(_lastDragDropCandidateNode != null)
+					_lastDragDropCandidateNode.BackColor = Color.White;
+
 				// Get destination node
 				TreeNode destNode = _treeView.GetNodeAt(_treeView.PointToClient(new Point(e.X, e.Y)));
 
@@ -924,6 +939,14 @@ namespace AoETechTreeTool
 					}
 				}
 			}
+		}
+
+		private void _treeView_QueryContinueDrag(object sender, QueryContinueDragEventArgs e)
+		{
+			// Check whether background color of last destination candidate needs to be resetted
+			// TODO Does not fire?
+			if((e.Action == DragAction.Cancel || e.Action == DragAction.Drop) && _lastDragDropCandidateNode != null)
+				_lastDragDropCandidateNode.BackColor = Color.White;
 		}
 
 		private void _requirementsView_CellEndEdit(object sender, DataGridViewCellEventArgs e)
@@ -1203,18 +1226,29 @@ namespace AoETechTreeTool
 
 		private void _designFormButton_Click(object sender, EventArgs e)
 		{
-			// Form not already visible?
-			if(_designForm == null)
-			{
-				// Create form
-				_designForm = new DesignForm(_datFile);
+			// Show form
+			new DesignForm(_datFile).ShowDialog();
 
-				// Catch close event to properly destroy object
-				_designForm.FormClosed += (s, ea) => { _designForm = null; };
+			// Update node background list
+			_updating = true;
+			_nodeBackgroundField.Items.Clear();
+			_datFile.TechTreeNew.DesignData.NodeBackgrounds.ForEach(n => _nodeBackgroundField.Items.Add($"{n.Name}"));
+			if(_selectedElement != null)
+				if(_selectedElement.NodeBackgroundIndex < _nodeBackgroundField.Items.Count)
+					_nodeBackgroundField.SelectedIndex = _selectedElement.NodeBackgroundIndex;
+				else
+					_nodeBackgroundField.SelectedIndex = _selectedElement.NodeBackgroundIndex = (int)_selectedElement.ElementType;
+			_updating = false;
+		}
 
-				// Show form
-				_designForm.Show();
-			}
+		private void _nodeBackgroundField_SelectedIndexChanged(object sender, EventArgs e)
+		{
+			// Updating?
+			if(_updating)
+				return;
+
+			// Update value
+			_selectedElement.NodeBackgroundIndex = _nodeBackgroundField.SelectedIndex;
 		}
 
 		#endregion Event handlers
