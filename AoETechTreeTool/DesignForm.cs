@@ -134,7 +134,7 @@ namespace AoETechTreeTool
 				return;
 
 			// Save design
-			//try
+			try
 			{
 				// Write into buffer
 				IORAMHelper.RAMBuffer buffer = new IORAMHelper.RAMBuffer();
@@ -143,11 +143,11 @@ namespace AoETechTreeTool
 				// Save buffer
 				buffer.Save(_saveDesignDialog.FileName);
 			}
-			//catch(Exception ex)
+			catch(Exception ex)
 			{
 				// Message
-				//MessageBox.Show("Error exporting tech tree design: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-				//return;
+				MessageBox.Show("Error exporting tech tree design: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+				return;
 			}
 		}
 
@@ -158,7 +158,7 @@ namespace AoETechTreeTool
 				return;
 
 			// Load data and update tree view
-			//try
+			try
 			{
 				// Load data from file
 				IORAMHelper.RAMBuffer buffer = new IORAMHelper.RAMBuffer(_openDesignDialog.FileName);
@@ -168,11 +168,11 @@ namespace AoETechTreeTool
 				// Update view
 				RefillControlsFromData();
 			}
-			//catch(Exception ex)
+			catch(Exception ex)
 			{
 				// Message
-				//MessageBox.Show("Error importing tech tree design: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-				//return;
+				MessageBox.Show("Error importing tech tree design: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+				return;
 			}
 		}
 
