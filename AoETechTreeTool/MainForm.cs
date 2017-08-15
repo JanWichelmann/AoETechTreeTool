@@ -167,7 +167,7 @@ namespace AoETechTreeTool
 					ElementType = nodeElement.ElementType,
 					RenderMode = nodeElement.RenderMode,
 					RequiredElements = new List<Tuple<TechTreeNew.TechTreeElement.ItemType, short>>(nodeElement.RequiredElements),
-					NodeBackgroundIndex = nodeElement.NodeBackgroundIndex
+					NodeTypeIndex = nodeElement.NodeTypeIndex
 				};
 
 				// Run through children
@@ -352,8 +352,8 @@ namespace AoETechTreeTool
 				_civsList.Items.Add(new KeyValuePair<byte, string>(i, _datFile.Civs[i].Name.Trim()));
 
 			// Fill node background list box
-			_nodeBackgroundField.Items.Clear();
-			_datFile.TechTreeNew.DesignData.NodeBackgrounds.ForEach(n => _nodeBackgroundField.Items.Add($"{n.Name}"));
+			_nodeTypeField.Items.Clear();
+			_datFile.TechTreeNew.DesignData.NodeTypes.ForEach(n => _nodeTypeField.Items.Add($"{n.Name}"));
 		}
 
 		private void _saveDataButton_Click(object sender, EventArgs e)
@@ -477,10 +477,10 @@ namespace AoETechTreeTool
 					_requirementsView.Rows.Add("Unit", req.Item2.ToString());
 				else
 					_requirementsView.Rows.Add("Research", req.Item2.ToString());
-			if(_selectedElement.NodeBackgroundIndex < _nodeBackgroundField.Items.Count)
-				_nodeBackgroundField.SelectedIndex = _selectedElement.NodeBackgroundIndex;
+			if(_selectedElement.NodeTypeIndex < _nodeTypeField.Items.Count)
+				_nodeTypeField.SelectedIndex = _selectedElement.NodeTypeIndex;
 			else
-				_nodeBackgroundField.SelectedIndex = _selectedElement.NodeBackgroundIndex = (int)_selectedElement.ElementType;
+				_nodeTypeField.SelectedIndex = _selectedElement.NodeTypeIndex = (int)_selectedElement.ElementType;
 			_entryContextMenu.Tag = e.Node;
 
 			// Update civs
@@ -663,8 +663,8 @@ namespace AoETechTreeTool
 				return;
 
 			// Update item background index, if default one is selected
-			if(_nodeBackgroundField.SelectedIndex == (int)_selectedElement.ElementType)
-				_nodeBackgroundField.SelectedIndex = (int)TechTreeNew.TechTreeElement.ItemType.Creatable;
+			if(_nodeTypeField.SelectedIndex == (int)_selectedElement.ElementType)
+				_nodeTypeField.SelectedIndex = (int)TechTreeNew.TechTreeElement.ItemType.Creatable;
 
 			// Change item type
 			if(_typeUnitButton.Checked)
@@ -681,8 +681,8 @@ namespace AoETechTreeTool
 				return;
 
 			// Update item background index, if default one is selected
-			if(_nodeBackgroundField.SelectedIndex == (int)_selectedElement.ElementType)
-				_nodeBackgroundField.SelectedIndex = (int)TechTreeNew.TechTreeElement.ItemType.Building;
+			if(_nodeTypeField.SelectedIndex == (int)_selectedElement.ElementType)
+				_nodeTypeField.SelectedIndex = (int)TechTreeNew.TechTreeElement.ItemType.Building;
 
 			// Change item type
 			if(_typeBuildingButton.Checked)
@@ -699,8 +699,8 @@ namespace AoETechTreeTool
 				return;
 
 			// Update item background index, if default one is selected
-			if(_nodeBackgroundField.SelectedIndex == (int)_selectedElement.ElementType)
-				_nodeBackgroundField.SelectedIndex = (int)TechTreeNew.TechTreeElement.ItemType.Research;
+			if(_nodeTypeField.SelectedIndex == (int)_selectedElement.ElementType)
+				_nodeTypeField.SelectedIndex = (int)TechTreeNew.TechTreeElement.ItemType.Research;
 
 			// Change item type
 			if(_typeResearchButton.Checked)
@@ -975,8 +975,7 @@ namespace AoETechTreeTool
 					((DataGridViewComboBoxCell)row.Cells[0]).Value = "Research";
 
 				// Convert ID
-				short id;
-				if(!short.TryParse((string)row.Cells[1].Value, out id))
+				if(!short.TryParse((string)row.Cells[1].Value, out short id))
 				{
 					// Error
 					if(!string.IsNullOrEmpty((string)row.Cells[1].Value))
@@ -1230,15 +1229,15 @@ namespace AoETechTreeTool
 			// Show form
 			new DesignForm(_datFile).ShowDialog();
 
-			// Update node background list
+			// Update node type list
 			_updating = true;
-			_nodeBackgroundField.Items.Clear();
-			_datFile.TechTreeNew.DesignData.NodeBackgrounds.ForEach(n => _nodeBackgroundField.Items.Add($"{n.Name}"));
+			_nodeTypeField.Items.Clear();
+			_datFile.TechTreeNew.DesignData.NodeTypes.ForEach(n => _nodeTypeField.Items.Add($"{n.Name}"));
 			if(_selectedElement != null)
-				if(_selectedElement.NodeBackgroundIndex < _nodeBackgroundField.Items.Count)
-					_nodeBackgroundField.SelectedIndex = _selectedElement.NodeBackgroundIndex;
+				if(_selectedElement.NodeTypeIndex < _nodeTypeField.Items.Count)
+					_nodeTypeField.SelectedIndex = _selectedElement.NodeTypeIndex;
 				else
-					_nodeBackgroundField.SelectedIndex = _selectedElement.NodeBackgroundIndex = (int)_selectedElement.ElementType;
+					_nodeTypeField.SelectedIndex = _selectedElement.NodeTypeIndex = (int)_selectedElement.ElementType;
 			_updating = false;
 		}
 
@@ -1249,7 +1248,7 @@ namespace AoETechTreeTool
 				return;
 
 			// Update value
-			_selectedElement.NodeBackgroundIndex = _nodeBackgroundField.SelectedIndex;
+			_selectedElement.NodeTypeIndex = _nodeTypeField.SelectedIndex;
 		}
 
 		#endregion Event handlers

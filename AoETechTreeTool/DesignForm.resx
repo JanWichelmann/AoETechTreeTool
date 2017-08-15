@@ -150,8 +150,8 @@ Default frames:
 4 - Research enabled (64x64)
 5 - Research disabled (64x64)</value>
   </data>
-  <data name="_nodeBackgroundsListBox.ToolTip" xml:space="preserve">
-    <value>The different node backgrounds. Their index [*] is their ID at the same time, so the order is important.
+  <data name="_nodeTypesListBox.ToolTip" xml:space="preserve">
+    <value>The different node types. Their index [*] is their ID at the same time, so the order is important.
 Restrictions:
 - [0] should always be Research
 - [1] should always be Unit

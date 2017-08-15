@@ -68,11 +68,12 @@
 			this._scrollRightButtonLabel = new System.Windows.Forms.Label();
 			this._scrollLeftButtonLabel = new System.Windows.Forms.Label();
 			this._closeButtonLabel = new System.Windows.Forms.Label();
-			this._nodeBackgroundsListBox = new System.Windows.Forms.ListBox();
-			this._addNodeBackgroundButton = new System.Windows.Forms.Button();
-			this._deleteNodeBackgroundButton = new System.Windows.Forms.Button();
+			this._nodeTypesListBox = new System.Windows.Forms.ListBox();
+			this._addNodeTypeButton = new System.Windows.Forms.Button();
+			this._deleteNodeTypeButton = new System.Windows.Forms.Button();
 			this._nodeBackgroundNameLabel = new System.Windows.Forms.Label();
 			this._nodeBackgroundIndexLabel = new System.Windows.Forms.Label();
+			this._nodeTypeLegendLabelDllIdLabel = new System.Windows.Forms.Label();
 			this._scrollSettingsGroupBox = new System.Windows.Forms.GroupBox();
 			this._keyboardScrollAmountBox = new System.Windows.Forms.NumericUpDown();
 			this._mouseScrollAmountBox = new System.Windows.Forms.NumericUpDown();
@@ -113,8 +114,9 @@
 			this._resolutionSettingsGrid = new System.Windows.Forms.PropertyGrid();
 			this._minimumResolutionBox = new System.Windows.Forms.NumericUpDown();
 			this._nodeSettingsGroupBox = new System.Windows.Forms.GroupBox();
-			this._nodeBackgroundNameBox = new System.Windows.Forms.TextBox();
-			this._nodeBackgroundIndexField = new System.Windows.Forms.NumericUpDown();
+			this._nodeTypeNameBox = new System.Windows.Forms.TextBox();
+			this._nodeTypeIndexField = new System.Windows.Forms.NumericUpDown();
+			this._nodeTypeLegendLabelDllIdBox = new System.Windows.Forms.NumericUpDown();
 			this._menuPanel.SuspendLayout();
 			this._slpGroupBox.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this._slpLegendDisabledIdBox)).BeginInit();
@@ -154,7 +156,8 @@
 			this._resolutionSettingsGroupBox.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this._minimumResolutionBox)).BeginInit();
 			this._nodeSettingsGroupBox.SuspendLayout();
-			((System.ComponentModel.ISupportInitialize)(this._nodeBackgroundIndexField)).BeginInit();
+			((System.ComponentModel.ISupportInitialize)(this._nodeTypeIndexField)).BeginInit();
+			((System.ComponentModel.ISupportInitialize)(this._nodeTypeLegendLabelDllIdBox)).BeginInit();
 			this.SuspendLayout();
 			// 
 			// _menuPanel
@@ -576,60 +579,71 @@
 			this._infoToolTip.SetToolTip(this._closeButtonLabel, "The position of the close button relative to the bottom right corner of the scree" +
         "n.");
 			// 
-			// _nodeBackgroundsListBox
+			// _nodeTypesListBox
 			// 
-			this._nodeBackgroundsListBox.FormattingEnabled = true;
-			this._nodeBackgroundsListBox.Location = new System.Drawing.Point(9, 71);
-			this._nodeBackgroundsListBox.Name = "_nodeBackgroundsListBox";
-			this._nodeBackgroundsListBox.Size = new System.Drawing.Size(289, 95);
-			this._nodeBackgroundsListBox.TabIndex = 6;
-			this._infoToolTip.SetToolTip(this._nodeBackgroundsListBox, resources.GetString("_nodeBackgroundsListBox.ToolTip"));
-			this._nodeBackgroundsListBox.SelectedIndexChanged += new System.EventHandler(this._nodeBackgroundsListBox_SelectedIndexChanged);
-			this._nodeBackgroundsListBox.Format += new System.Windows.Forms.ListControlConvertEventHandler(this._nodeBackgroundsListBox_Format);
+			this._nodeTypesListBox.FormattingEnabled = true;
+			this._nodeTypesListBox.Location = new System.Drawing.Point(9, 71);
+			this._nodeTypesListBox.Name = "_nodeTypesListBox";
+			this._nodeTypesListBox.Size = new System.Drawing.Size(289, 95);
+			this._nodeTypesListBox.TabIndex = 6;
+			this._infoToolTip.SetToolTip(this._nodeTypesListBox, resources.GetString("_nodeTypesListBox.ToolTip"));
+			this._nodeTypesListBox.SelectedIndexChanged += new System.EventHandler(this._nodeTypesListBox_SelectedIndexChanged);
+			this._nodeTypesListBox.Format += new System.Windows.Forms.ListControlConvertEventHandler(this._nodeTypesListBox_Format);
 			// 
-			// _addNodeBackgroundButton
+			// _addNodeTypeButton
 			// 
-			this._addNodeBackgroundButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this._addNodeBackgroundButton.Location = new System.Drawing.Point(183, 19);
-			this._addNodeBackgroundButton.Name = "_addNodeBackgroundButton";
-			this._addNodeBackgroundButton.Size = new System.Drawing.Size(55, 22);
-			this._addNodeBackgroundButton.TabIndex = 20;
-			this._addNodeBackgroundButton.Text = "add";
-			this._infoToolTip.SetToolTip(this._addNodeBackgroundButton, "Adds a new node background setting.");
-			this._addNodeBackgroundButton.UseVisualStyleBackColor = true;
-			this._addNodeBackgroundButton.Click += new System.EventHandler(this._addNodeBackgroundButton_Click);
+			this._addNodeTypeButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this._addNodeTypeButton.Location = new System.Drawing.Point(183, 19);
+			this._addNodeTypeButton.Name = "_addNodeTypeButton";
+			this._addNodeTypeButton.Size = new System.Drawing.Size(55, 22);
+			this._addNodeTypeButton.TabIndex = 20;
+			this._addNodeTypeButton.Text = "add";
+			this._infoToolTip.SetToolTip(this._addNodeTypeButton, "Adds a new node type setting.");
+			this._addNodeTypeButton.UseVisualStyleBackColor = true;
+			this._addNodeTypeButton.Click += new System.EventHandler(this._addNodeTypeButton_Click);
 			// 
-			// _deleteNodeBackgroundButton
+			// _deleteNodeTypeButton
 			// 
-			this._deleteNodeBackgroundButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this._deleteNodeBackgroundButton.Location = new System.Drawing.Point(244, 19);
-			this._deleteNodeBackgroundButton.Name = "_deleteNodeBackgroundButton";
-			this._deleteNodeBackgroundButton.Size = new System.Drawing.Size(55, 22);
-			this._deleteNodeBackgroundButton.TabIndex = 21;
-			this._deleteNodeBackgroundButton.Text = "delete";
-			this._infoToolTip.SetToolTip(this._deleteNodeBackgroundButton, "Deletes a node background setting.");
-			this._deleteNodeBackgroundButton.UseVisualStyleBackColor = true;
-			this._deleteNodeBackgroundButton.Click += new System.EventHandler(this._deleteNodeBackgroundButton_Click);
+			this._deleteNodeTypeButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this._deleteNodeTypeButton.Location = new System.Drawing.Point(244, 19);
+			this._deleteNodeTypeButton.Name = "_deleteNodeTypeButton";
+			this._deleteNodeTypeButton.Size = new System.Drawing.Size(55, 22);
+			this._deleteNodeTypeButton.TabIndex = 21;
+			this._deleteNodeTypeButton.Text = "delete";
+			this._infoToolTip.SetToolTip(this._deleteNodeTypeButton, "Deletes a node type setting.");
+			this._deleteNodeTypeButton.UseVisualStyleBackColor = true;
+			this._deleteNodeTypeButton.Click += new System.EventHandler(this._deleteNodeTypeButton_Click);
 			// 
 			// _nodeBackgroundNameLabel
 			// 
 			this._nodeBackgroundNameLabel.AutoSize = true;
-			this._nodeBackgroundNameLabel.Location = new System.Drawing.Point(6, 48);
+			this._nodeBackgroundNameLabel.Location = new System.Drawing.Point(6, 23);
 			this._nodeBackgroundNameLabel.Name = "_nodeBackgroundNameLabel";
-			this._nodeBackgroundNameLabel.Size = new System.Drawing.Size(97, 13);
+			this._nodeBackgroundNameLabel.Size = new System.Drawing.Size(88, 13);
 			this._nodeBackgroundNameLabel.TabIndex = 18;
-			this._nodeBackgroundNameLabel.Text = "Background name:";
-			this._infoToolTip.SetToolTip(this._nodeBackgroundNameLabel, "The name of the background setting. Only for display in this editor.");
+			this._nodeBackgroundNameLabel.Text = "Node type name:";
+			this._infoToolTip.SetToolTip(this._nodeBackgroundNameLabel, "The name of the node type. Only for display in this editor.");
 			// 
 			// _nodeBackgroundIndexLabel
 			// 
 			this._nodeBackgroundIndexLabel.AutoSize = true;
-			this._nodeBackgroundIndexLabel.Location = new System.Drawing.Point(6, 22);
+			this._nodeBackgroundIndexLabel.Location = new System.Drawing.Point(6, 48);
 			this._nodeBackgroundIndexLabel.Name = "_nodeBackgroundIndexLabel";
 			this._nodeBackgroundIndexLabel.Size = new System.Drawing.Size(125, 13);
 			this._nodeBackgroundIndexLabel.TabIndex = 2;
 			this._nodeBackgroundIndexLabel.Text = "Background frame index:";
 			this._infoToolTip.SetToolTip(this._nodeBackgroundIndexLabel, resources.GetString("_nodeBackgroundIndexLabel.ToolTip"));
+			// 
+			// _nodeTypeLegendLabelDllIdLabel
+			// 
+			this._nodeTypeLegendLabelDllIdLabel.AutoSize = true;
+			this._nodeTypeLegendLabelDllIdLabel.Location = new System.Drawing.Point(182, 48);
+			this._nodeTypeLegendLabelDllIdLabel.Name = "_nodeTypeLegendLabelDllIdLabel";
+			this._nodeTypeLegendLabelDllIdLabel.Size = new System.Drawing.Size(44, 13);
+			this._nodeTypeLegendLabelDllIdLabel.TabIndex = 23;
+			this._nodeTypeLegendLabelDllIdLabel.Text = "DLL-ID:";
+			this._infoToolTip.SetToolTip(this._nodeTypeLegendLabelDllIdLabel, "The language DLL string ID of the node label displayed at the bottom of the legen" +
+        "d.\r\nDefaults:\r\n20120 - \"TECHNOLOGIES\"\r\n20121 - \"UNITS\"\r\n20122 - \"BUILDINGS\"");
 			// 
 			// _scrollSettingsGroupBox
 			// 
@@ -1222,6 +1236,7 @@
 			// 
 			// _resolutionSettingsGrid
 			// 
+			this._resolutionSettingsGrid.LineColor = System.Drawing.SystemColors.ControlDark;
 			this._resolutionSettingsGrid.Location = new System.Drawing.Point(5, 49);
 			this._resolutionSettingsGrid.Name = "_resolutionSettingsGrid";
 			this._resolutionSettingsGrid.Size = new System.Drawing.Size(415, 430);
@@ -1249,12 +1264,14 @@
 			// 
 			// _nodeSettingsGroupBox
 			// 
-			this._nodeSettingsGroupBox.Controls.Add(this._deleteNodeBackgroundButton);
-			this._nodeSettingsGroupBox.Controls.Add(this._addNodeBackgroundButton);
-			this._nodeSettingsGroupBox.Controls.Add(this._nodeBackgroundsListBox);
-			this._nodeSettingsGroupBox.Controls.Add(this._nodeBackgroundNameBox);
+			this._nodeSettingsGroupBox.Controls.Add(this._nodeTypeLegendLabelDllIdBox);
+			this._nodeSettingsGroupBox.Controls.Add(this._nodeTypeLegendLabelDllIdLabel);
+			this._nodeSettingsGroupBox.Controls.Add(this._deleteNodeTypeButton);
+			this._nodeSettingsGroupBox.Controls.Add(this._addNodeTypeButton);
+			this._nodeSettingsGroupBox.Controls.Add(this._nodeTypesListBox);
+			this._nodeSettingsGroupBox.Controls.Add(this._nodeTypeNameBox);
 			this._nodeSettingsGroupBox.Controls.Add(this._nodeBackgroundNameLabel);
-			this._nodeSettingsGroupBox.Controls.Add(this._nodeBackgroundIndexField);
+			this._nodeSettingsGroupBox.Controls.Add(this._nodeTypeIndexField);
 			this._nodeSettingsGroupBox.Controls.Add(this._nodeBackgroundIndexLabel);
 			this._nodeSettingsGroupBox.Controls.Add(this._nodeFontBox);
 			this._nodeSettingsGroupBox.Controls.Add(this._nodeFontLabel);
@@ -1265,36 +1282,59 @@
 			this._nodeSettingsGroupBox.TabStop = false;
 			this._nodeSettingsGroupBox.Text = "Node settings";
 			// 
-			// _nodeBackgroundNameBox
+			// _nodeTypeNameBox
 			// 
-			this._nodeBackgroundNameBox.Location = new System.Drawing.Point(109, 45);
-			this._nodeBackgroundNameBox.Name = "_nodeBackgroundNameBox";
-			this._nodeBackgroundNameBox.Size = new System.Drawing.Size(189, 20);
-			this._nodeBackgroundNameBox.TabIndex = 19;
-			this._nodeBackgroundNameBox.TextChanged += new System.EventHandler(this._nodeBackgroundNameBox_TextChanged);
+			this._nodeTypeNameBox.Location = new System.Drawing.Point(97, 20);
+			this._nodeTypeNameBox.Name = "_nodeTypeNameBox";
+			this._nodeTypeNameBox.Size = new System.Drawing.Size(80, 20);
+			this._nodeTypeNameBox.TabIndex = 19;
+			this._nodeTypeNameBox.TextChanged += new System.EventHandler(this._nodeTypeNameBox_TextChanged);
 			// 
-			// _nodeBackgroundIndexField
+			// _nodeTypeIndexField
 			// 
-			this._nodeBackgroundIndexField.Location = new System.Drawing.Point(137, 20);
-			this._nodeBackgroundIndexField.Maximum = new decimal(new int[] {
+			this._nodeTypeIndexField.Location = new System.Drawing.Point(137, 46);
+			this._nodeTypeIndexField.Maximum = new decimal(new int[] {
             999,
             0,
             0,
             0});
-			this._nodeBackgroundIndexField.Minimum = new decimal(new int[] {
+			this._nodeTypeIndexField.Minimum = new decimal(new int[] {
             1,
             0,
             0,
             -2147483648});
-			this._nodeBackgroundIndexField.Name = "_nodeBackgroundIndexField";
-			this._nodeBackgroundIndexField.Size = new System.Drawing.Size(39, 20);
-			this._nodeBackgroundIndexField.TabIndex = 17;
-			this._nodeBackgroundIndexField.Value = new decimal(new int[] {
+			this._nodeTypeIndexField.Name = "_nodeTypeIndexField";
+			this._nodeTypeIndexField.Size = new System.Drawing.Size(39, 20);
+			this._nodeTypeIndexField.TabIndex = 17;
+			this._nodeTypeIndexField.Value = new decimal(new int[] {
             999,
             0,
             0,
             0});
-			this._nodeBackgroundIndexField.ValueChanged += new System.EventHandler(this._nodeBackgroundIndexField_ValueChanged);
+			this._nodeTypeIndexField.ValueChanged += new System.EventHandler(this._nodeTypeIndexField_ValueChanged);
+			// 
+			// _nodeTypeLegendLabelDllIdBox
+			// 
+			this._nodeTypeLegendLabelDllIdBox.Location = new System.Drawing.Point(232, 46);
+			this._nodeTypeLegendLabelDllIdBox.Maximum = new decimal(new int[] {
+            9999999,
+            0,
+            0,
+            0});
+			this._nodeTypeLegendLabelDllIdBox.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            -2147483648});
+			this._nodeTypeLegendLabelDllIdBox.Name = "_nodeTypeLegendLabelDllIdBox";
+			this._nodeTypeLegendLabelDllIdBox.Size = new System.Drawing.Size(66, 20);
+			this._nodeTypeLegendLabelDllIdBox.TabIndex = 24;
+			this._nodeTypeLegendLabelDllIdBox.Value = new decimal(new int[] {
+            9999999,
+            0,
+            0,
+            0});
+			this._nodeTypeLegendLabelDllIdBox.ValueChanged += new System.EventHandler(this._nodeTypeLegendLabelDllIdBox_ValueChanged);
 			// 
 			// DesignForm
 			// 
@@ -1359,7 +1399,8 @@
 			((System.ComponentModel.ISupportInitialize)(this._minimumResolutionBox)).EndInit();
 			this._nodeSettingsGroupBox.ResumeLayout(false);
 			this._nodeSettingsGroupBox.PerformLayout();
-			((System.ComponentModel.ISupportInitialize)(this._nodeBackgroundIndexField)).EndInit();
+			((System.ComponentModel.ISupportInitialize)(this._nodeTypeIndexField)).EndInit();
+			((System.ComponentModel.ISupportInitialize)(this._nodeTypeLegendLabelDllIdBox)).EndInit();
 			this.ResumeLayout(false);
 
 		}
@@ -1446,10 +1487,12 @@
 		private System.Windows.Forms.GroupBox _nodeSettingsGroupBox;
 		private System.Windows.Forms.Label _nodeBackgroundIndexLabel;
 		private System.Windows.Forms.Label _nodeBackgroundNameLabel;
-		private System.Windows.Forms.NumericUpDown _nodeBackgroundIndexField;
-		private System.Windows.Forms.TextBox _nodeBackgroundNameBox;
-		private System.Windows.Forms.ListBox _nodeBackgroundsListBox;
-		private System.Windows.Forms.Button _addNodeBackgroundButton;
-		private System.Windows.Forms.Button _deleteNodeBackgroundButton;
+		private System.Windows.Forms.NumericUpDown _nodeTypeIndexField;
+		private System.Windows.Forms.TextBox _nodeTypeNameBox;
+		private System.Windows.Forms.ListBox _nodeTypesListBox;
+		private System.Windows.Forms.Button _addNodeTypeButton;
+		private System.Windows.Forms.Button _deleteNodeTypeButton;
+		private System.Windows.Forms.Label _nodeTypeLegendLabelDllIdLabel;
+		private System.Windows.Forms.NumericUpDown _nodeTypeLegendLabelDllIdBox;
 	}
 }

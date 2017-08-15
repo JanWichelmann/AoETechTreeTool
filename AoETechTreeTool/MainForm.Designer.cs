@@ -38,7 +38,7 @@
 			this._treeGroupBox = new System.Windows.Forms.GroupBox();
 			this._editPanel = new System.Windows.Forms.Panel();
 			this._nodeBoxGroupBox = new System.Windows.Forms.GroupBox();
-			this._nodeBackgroundField = new System.Windows.Forms.ComboBox();
+			this._nodeTypeField = new System.Windows.Forms.ComboBox();
 			this._requirementsGroupBox = new System.Windows.Forms.GroupBox();
 			this._requirementsView = new System.Windows.Forms.DataGridView();
 			this._requirementsViewTypeColumn = new System.Windows.Forms.DataGridViewComboBoxColumn();
@@ -189,23 +189,23 @@
 			// 
 			// _nodeBoxGroupBox
 			// 
-			this._nodeBoxGroupBox.Controls.Add(this._nodeBackgroundField);
+			this._nodeBoxGroupBox.Controls.Add(this._nodeTypeField);
 			this._nodeBoxGroupBox.Location = new System.Drawing.Point(10, 192);
 			this._nodeBoxGroupBox.Name = "_nodeBoxGroupBox";
 			this._nodeBoxGroupBox.Size = new System.Drawing.Size(218, 50);
 			this._nodeBoxGroupBox.TabIndex = 17;
 			this._nodeBoxGroupBox.TabStop = false;
-			this._nodeBoxGroupBox.Text = "Node background";
+			this._nodeBoxGroupBox.Text = "Node background type";
 			// 
-			// _nodeBackgroundField
+			// _nodeTypeField
 			// 
-			this._nodeBackgroundField.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-			this._nodeBackgroundField.FormattingEnabled = true;
-			this._nodeBackgroundField.Location = new System.Drawing.Point(8, 19);
-			this._nodeBackgroundField.Name = "_nodeBackgroundField";
-			this._nodeBackgroundField.Size = new System.Drawing.Size(202, 21);
-			this._nodeBackgroundField.TabIndex = 0;
-			this._nodeBackgroundField.SelectedIndexChanged += new System.EventHandler(this._nodeBackgroundField_SelectedIndexChanged);
+			this._nodeTypeField.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+			this._nodeTypeField.FormattingEnabled = true;
+			this._nodeTypeField.Location = new System.Drawing.Point(8, 19);
+			this._nodeTypeField.Name = "_nodeTypeField";
+			this._nodeTypeField.Size = new System.Drawing.Size(202, 21);
+			this._nodeTypeField.TabIndex = 0;
+			this._nodeTypeField.SelectedIndexChanged += new System.EventHandler(this._nodeBackgroundField_SelectedIndexChanged);
 			// 
 			// _requirementsGroupBox
 			// 
@@ -663,7 +663,7 @@
 		private System.Windows.Forms.ToolStripMenuItem _entryDeleteMenuButton;
 		private System.Windows.Forms.Button _designFormButton;
 		private System.Windows.Forms.GroupBox _nodeBoxGroupBox;
-		private System.Windows.Forms.ComboBox _nodeBackgroundField;
+		private System.Windows.Forms.ComboBox _nodeTypeField;
 	}
 }
 

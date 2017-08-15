@@ -43,7 +43,7 @@ namespace AoETechTreeTool
 			InitializeComponent();
 
 			// Load existing design, fill controls
-			_datFile=datFile;
+			_datFile = datFile;
 			RefillControlsFromData();
 		}
 
@@ -102,17 +102,17 @@ namespace AoETechTreeTool
 			foreach(var currRes in _datFile.TechTreeNew.DesignData.ResolutionData)
 				_resolutionListBox.Items.Add(currRes.Key);
 
-			// Fill node background list box
-			_nodeBackgroundsListBox.Items.Clear();
-			foreach(var currNB in _datFile.TechTreeNew.DesignData.NodeBackgrounds)
-				_nodeBackgroundsListBox.Items.Add(currNB);
+			// Fill node type list box
+			_nodeTypesListBox.Items.Clear();
+			foreach(var currNB in _datFile.TechTreeNew.DesignData.NodeTypes)
+				_nodeTypesListBox.Items.Add(currNB);
 
 			// Updating finished
 			_updating = false;
 
 			// Select 0 elements
 			_resolutionListBox.SelectedItem = 0;
-			_nodeBackgroundsListBox.SelectedIndex = 0;
+			_nodeTypesListBox.SelectedIndex = 0;
 		}
 
 		#endregion
@@ -158,7 +158,7 @@ namespace AoETechTreeTool
 				return;
 
 			// Load data and update tree view
-			try
+			//try
 			{
 				// Load data from file
 				IORAMHelper.RAMBuffer buffer = new IORAMHelper.RAMBuffer(_openDesignDialog.FileName);
@@ -168,10 +168,10 @@ namespace AoETechTreeTool
 				// Update view
 				RefillControlsFromData();
 			}
-			catch(Exception ex)
+			//catch(Exception ex)
 			{
 				// Message
-				MessageBox.Show("Error importing tech tree design: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+			//	MessageBox.Show("Error importing tech tree design: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
 				return;
 			}
 		}
@@ -407,7 +407,10 @@ namespace AoETechTreeTool
 				CivBonusLabelRectangle = selectedResConf.CivBonusLabelRectangle,
 				CivSelectionComboBoxRectangle = selectedResConf.CivSelectionComboBoxRectangle,
 				CivSelectionTitleLabelRectangle = selectedResConf.CivSelectionTitleLabelRectangle,
-				LegendLabelRectangles = new List<Rectangle>(selectedResConf.LegendLabelRectangles),
+				LegendNotResearchedLabelRectangle = selectedResConf.LegendNotResearchedLabelRectangle,
+				LegendResearchedLabelRectangle = selectedResConf.LegendResearchedLabelRectangle,
+				LegendNodeTypeLabelRectangles = new List<Rectangle>(selectedResConf.LegendNodeTypeLabelRectangles),
+				LegendDisabledLabelRectangle = selectedResConf.LegendDisabledLabelRectangle,
 				AgeLabelRectangles = new List<Rectangle>(selectedResConf.AgeLabelRectangles),
 				VerticalDrawOffsets = new List<int>(selectedResConf.VerticalDrawOffsets)
 			};
@@ -463,7 +466,7 @@ namespace AoETechTreeTool
 				MessageBox.Show("Warning: There must be at least three age draw offsets!", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
 		}
 
-		private void _nodeBackgroundIndexField_ValueChanged(object sender, EventArgs e)
+		private void _nodeTypeIndexField_ValueChanged(object sender, EventArgs e)
 		{
 			// Updating
 			if(_updating)
@@ -471,15 +474,15 @@ namespace AoETechTreeTool
 			_updating = true;
 
 			// Fetch and update current element
-			TechTreeNew.TechTreeDesign.NodeBackground selectedNodeBackground = _datFile.TechTreeNew.DesignData.NodeBackgrounds[_nodeBackgroundsListBox.SelectedIndex];
-			selectedNodeBackground.FrameIndex = (int)_nodeBackgroundIndexField.Value;
-			_nodeBackgroundsListBox.Items[_nodeBackgroundsListBox.SelectedIndex] = selectedNodeBackground;
+			TechTreeNew.TechTreeDesign.NodeType selectedNodeType = _datFile.TechTreeNew.DesignData.NodeTypes[_nodeTypesListBox.SelectedIndex];
+			selectedNodeType.FrameIndex = (int)_nodeTypeIndexField.Value;
+			_nodeTypesListBox.Items[_nodeTypesListBox.SelectedIndex] = selectedNodeType;
 
 			// Finished
 			_updating = false;
 		}
 
-		private void _nodeBackgroundNameBox_TextChanged(object sender, EventArgs e)
+		private void _nodeTypeNameBox_TextChanged(object sender, EventArgs e)
 		{
 			// Updating
 			if(_updating)
@@ -487,15 +490,31 @@ namespace AoETechTreeTool
 			_updating = true;
 
 			// Fetch and update current element
-			TechTreeNew.TechTreeDesign.NodeBackground selectedNodeBackground = _datFile.TechTreeNew.DesignData.NodeBackgrounds[_nodeBackgroundsListBox.SelectedIndex];
-			selectedNodeBackground.Name = _nodeBackgroundNameBox.Text;
-			_nodeBackgroundsListBox.Items[_nodeBackgroundsListBox.SelectedIndex] = selectedNodeBackground;
+			TechTreeNew.TechTreeDesign.NodeType selectedNodeType = _datFile.TechTreeNew.DesignData.NodeTypes[_nodeTypesListBox.SelectedIndex];
+			selectedNodeType.Name = _nodeTypeNameBox.Text;
+			_nodeTypesListBox.Items[_nodeTypesListBox.SelectedIndex] = selectedNodeType;
 
 			// Finished
 			_updating = false;
 		}
 
-		private void _nodeBackgroundsListBox_SelectedIndexChanged(object sender, EventArgs e)
+		private void _nodeTypeLegendLabelDllIdBox_ValueChanged(object sender, EventArgs e)
+		{
+			// Updating
+			if(_updating)
+				return;
+			_updating = true;
+
+			// Fetch and update current element
+			TechTreeNew.TechTreeDesign.NodeType selectedNodeType = _datFile.TechTreeNew.DesignData.NodeTypes[_nodeTypesListBox.SelectedIndex];
+			selectedNodeType.LegendLabelDllId = (int)_nodeTypeLegendLabelDllIdBox.Value;
+			_nodeTypesListBox.Items[_nodeTypesListBox.SelectedIndex] = selectedNodeType;
+
+			// Finished
+			_updating = false;
+		}
+
+		private void _nodeTypesListBox_SelectedIndexChanged(object sender, EventArgs e)
 		{
 			// Prevent accidental changes
 			if(_updating)
@@ -503,52 +522,54 @@ namespace AoETechTreeTool
 			_updating = true;
 
 			// Select first item if none is selected
-			if(_nodeBackgroundsListBox.SelectedItem == null)
-				_nodeBackgroundsListBox.SelectedIndex = 0;
+			if(_nodeTypesListBox.SelectedItem == null)
+				_nodeTypesListBox.SelectedIndex = 0;
 
 			// Fill controls
-			TechTreeNew.TechTreeDesign.NodeBackground selectedNodeBackground = _datFile.TechTreeNew.DesignData.NodeBackgrounds[_nodeBackgroundsListBox.SelectedIndex];
-			_nodeBackgroundNameBox.Text = selectedNodeBackground.Name;
-			_nodeBackgroundIndexField.Value = selectedNodeBackground.FrameIndex;
+			TechTreeNew.TechTreeDesign.NodeType selectedNodeType = _datFile.TechTreeNew.DesignData.NodeTypes[_nodeTypesListBox.SelectedIndex];
+			_nodeTypeNameBox.Text = selectedNodeType.Name;
+			_nodeTypeIndexField.Value = selectedNodeType.FrameIndex;
+			_nodeTypeLegendLabelDllIdBox.Value = selectedNodeType.LegendLabelDllId;
 
 			// Finished
 			_updating = false;
 		}
 
-		private void _nodeBackgroundsListBox_Format(object sender, ListControlConvertEventArgs e)
+		private void _nodeTypesListBox_Format(object sender, ListControlConvertEventArgs e)
 		{
 			// Display whole element data
-			var selectedNodeBackground = (TechTreeNew.TechTreeDesign.NodeBackground)e.ListItem;
+			var selectedNodeType = (TechTreeNew.TechTreeDesign.NodeType)e.ListItem;
 			if(e.DesiredType == typeof(string))
-				e.Value = $"[{_nodeBackgroundsListBox.Items.IndexOf(selectedNodeBackground)}] Frame {selectedNodeBackground.FrameIndex}: {selectedNodeBackground.Name}";
+				e.Value = $"[{_nodeTypesListBox.Items.IndexOf(selectedNodeType)}] Frame {selectedNodeType.FrameIndex}: {selectedNodeType.Name}, DLL: {selectedNodeType.LegendLabelDllId}";
 		}
 
-		private void _addNodeBackgroundButton_Click(object sender, EventArgs e)
+		private void _addNodeTypeButton_Click(object sender, EventArgs e)
 		{
-			// Create new node background data object based on selected one
-			TechTreeNew.TechTreeDesign.NodeBackground selectedNodeBackground = _datFile.TechTreeNew.DesignData.NodeBackgrounds[_nodeBackgroundsListBox.SelectedIndex];
-			TechTreeNew.TechTreeDesign.NodeBackground newNodeBackground = new TechTreeNew.TechTreeDesign.NodeBackground()
+			// Create new node type data object based on selected one
+			TechTreeNew.TechTreeDesign.NodeType selectedNodeType = _datFile.TechTreeNew.DesignData.NodeTypes[_nodeTypesListBox.SelectedIndex];
+			TechTreeNew.TechTreeDesign.NodeType newNodeType = new TechTreeNew.TechTreeDesign.NodeType()
 			{
-				Name = selectedNodeBackground.Name,
-				FrameIndex = selectedNodeBackground.FrameIndex
+				Name = selectedNodeType.Name,
+				FrameIndex = selectedNodeType.FrameIndex,
+				LegendLabelDllId = selectedNodeType.LegendLabelDllId
 			};
 
 			// Add object to list box and to internal list
-			_datFile.TechTreeNew.DesignData.NodeBackgrounds.Add(newNodeBackground);
-			_nodeBackgroundsListBox.Items.Add(newNodeBackground);
-			_nodeBackgroundsListBox.SelectedItem = newNodeBackground;
+			_datFile.TechTreeNew.DesignData.NodeTypes.Add(newNodeType);
+			_nodeTypesListBox.Items.Add(newNodeType);
+			_nodeTypesListBox.SelectedItem = newNodeType;
 		}
 
-		private void _deleteNodeBackgroundButton_Click(object sender, EventArgs e)
+		private void _deleteNodeTypeButton_Click(object sender, EventArgs e)
 		{
 			// Element selected?
 			// Also deny deletion if there are only three elements left
-			if(_nodeBackgroundsListBox.SelectedItems.Count == 0 || _nodeBackgroundsListBox.Items.Count <= 3)
+			if(_nodeTypesListBox.SelectedItems.Count == 0 || _nodeTypesListBox.Items.Count <= 3)
 				return;
 
 			// Delete element
-			_datFile.TechTreeNew.DesignData.NodeBackgrounds.Remove((TechTreeNew.TechTreeDesign.NodeBackground)_nodeBackgroundsListBox.SelectedItem);
-			_nodeBackgroundsListBox.Items.Remove(_nodeBackgroundsListBox.SelectedItem);
+			_datFile.TechTreeNew.DesignData.NodeTypes.Remove((TechTreeNew.TechTreeDesign.NodeType)_nodeTypesListBox.SelectedItem);
+			_nodeTypesListBox.Items.Remove(_nodeTypesListBox.SelectedItem);
 		}
 
 		#endregion
@@ -598,32 +619,22 @@ namespace AoETechTreeTool
 			[Category("Legend bottom")]
 			[DisplayName("\"Not researched\" label rectangle")]
 			[Description("The rectangle of the \"Not researched\" label.")]
-			public Rectangle LegendLabelRectangle1 { get; set; }
+			public Rectangle LegendNotResearchedLabelRectangle { get; set; }
 
 			[Category("Legend bottom")]
 			[DisplayName("\"Researched\" label rectangle")]
 			[Description("The rectangle of the \"Researched\" label.")]
-			public Rectangle LegendLabelRectangle2 { get; set; }
+			public Rectangle LegendResearchedLabelRectangle { get; set; }
 
 			[Category("Legend bottom")]
-			[DisplayName("\"Units\" label rectangle")]
-			[Description("The rectangle of the \"Units\" label.")]
-			public Rectangle LegendLabelRectangle3 { get; set; }
-
-			[Category("Legend bottom")]
-			[DisplayName("\"Buildings\" label rectangle")]
-			[Description("The rectangle of the \"Buildings\" label.")]
-			public Rectangle LegendLabelRectangle4 { get; set; }
-
-			[Category("Legend bottom")]
-			[DisplayName("\"Technologies\" label rectangle")]
-			[Description("The rectangle of the \"Technologies\" label.")]
-			public Rectangle LegendLabelRectangle5 { get; set; }
+			[DisplayName("Node type label rectangles")]
+			[Description("The rectangles of the different node type labels.")]
+			public List<RectangleF> LegendNodeTypeLabelRectangles { get; set; } // RectangleF because the collection editor does not work properly with Rectangle for strange reasons
 
 			[Category("Legend bottom")]
 			[DisplayName("\"Not available\" label rectangle")]
 			[Description("The rectangle of the \"Not available\" label.")]
-			public Rectangle LegendLabelRectangle6 { get; set; }
+			public Rectangle LegendDisabledLabelRectangle { get; set; }
 
 			[Category("Tree drawing related")]
 			[DisplayName("Age label rectangles")]
@@ -645,12 +656,10 @@ namespace AoETechTreeTool
 				CivBonusLabelRectangle = config.CivBonusLabelRectangle;
 				CivSelectionComboBoxRectangle = config.CivSelectionComboBoxRectangle;
 				CivSelectionTitleLabelRectangle = config.CivSelectionTitleLabelRectangle;
-				LegendLabelRectangle1 = config.LegendLabelRectangles[0];
-				LegendLabelRectangle2 = config.LegendLabelRectangles[1];
-				LegendLabelRectangle3 = config.LegendLabelRectangles[2];
-				LegendLabelRectangle4 = config.LegendLabelRectangles[3];
-				LegendLabelRectangle5 = config.LegendLabelRectangles[4];
-				LegendLabelRectangle6 = config.LegendLabelRectangles[5];
+				LegendNotResearchedLabelRectangle = config.LegendNotResearchedLabelRectangle;
+				LegendResearchedLabelRectangle = config.LegendResearchedLabelRectangle;
+				LegendNodeTypeLabelRectangles = new List<RectangleF>(CastRectangleList(config.LegendNodeTypeLabelRectangles));
+				LegendDisabledLabelRectangle = config.LegendDisabledLabelRectangle;
 				AgeLabelRectangles = new List<RectangleF>(CastRectangleList(config.AgeLabelRectangles));
 				VerticalDrawOffsets = new List<int>(config.VerticalDrawOffsets);
 			}
@@ -667,15 +676,10 @@ namespace AoETechTreeTool
 					CivBonusLabelRectangle = data.CivBonusLabelRectangle,
 					CivSelectionComboBoxRectangle = data.CivSelectionComboBoxRectangle,
 					CivSelectionTitleLabelRectangle = data.CivSelectionTitleLabelRectangle,
-					LegendLabelRectangles = new List<Rectangle>(new Rectangle[]
-					{
-						data.LegendLabelRectangle1,
-						data.LegendLabelRectangle2,
-						data.LegendLabelRectangle3,
-						data.LegendLabelRectangle4,
-						data.LegendLabelRectangle5,
-						data.LegendLabelRectangle6
-					}),
+					LegendNotResearchedLabelRectangle = data.LegendNotResearchedLabelRectangle,
+					LegendResearchedLabelRectangle = data.LegendResearchedLabelRectangle,
+					LegendNodeTypeLabelRectangles = new List<Rectangle>(CastRectangleFList(data.LegendNodeTypeLabelRectangles)),
+					LegendDisabledLabelRectangle = data.LegendDisabledLabelRectangle,
 					AgeLabelRectangles = new List<Rectangle>(CastRectangleFList(data.AgeLabelRectangles)),
 					VerticalDrawOffsets = new List<int>(data.VerticalDrawOffsets)
 				};

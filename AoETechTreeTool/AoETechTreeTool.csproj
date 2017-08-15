@@ -120,9 +120,6 @@
     <Content Include="pal50500.bmp" />
     <Content Include="symbol.ico" />
   </ItemGroup>
-  <ItemGroup>
-    <WCFMetadata Include="Service References\" />
-  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>copy "$(SolutionDir)README.md" "$(ProjectDir)$(OutDir)"
