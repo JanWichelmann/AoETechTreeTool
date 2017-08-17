@@ -442,9 +442,15 @@ namespace AoETechTreeTool
 			_datFile.TechTreeNew.DesignData.ResolutionData.Remove((int)_resolutionListBox.SelectedItem);
 			_resolutionListBox.Items.Remove(_resolutionListBox.SelectedItem);
 			_resolutionSettingsGrid.SelectedObject = _datFile.TechTreeNew.DesignData.ResolutionData[(int)_resolutionListBox.SelectedItem];
-		}
+        }
 
-		private void _resolutionSettingsGrid_PropertyValueChanged(object sender, PropertyValueChangedEventArgs e)
+        private void DesignForm_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            // Call resolution grid leave event handler for saving changes
+            _resolutionSettingsGrid_Leave(sender, e);
+        }
+
+        private void _resolutionSettingsGrid_PropertyValueChanged(object sender, PropertyValueChangedEventArgs e)
 		{
 			// Call leave event handler for saving changes
 			_resolutionSettingsGrid_Leave(sender, e);
@@ -708,6 +714,6 @@ namespace AoETechTreeTool
 			}
 		}
 
-		#endregion
-	}
+        #endregion
+    }
 }
