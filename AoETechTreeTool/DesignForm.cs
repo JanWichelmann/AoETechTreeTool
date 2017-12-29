@@ -107,6 +107,11 @@ namespace AoETechTreeTool
 			foreach(var currNB in _datFile.TechTreeNew.DesignData.NodeTypes)
 				_nodeTypesListBox.Items.Add(currNB);
 
+			// Set age label data
+			_ageLabelFirstLineDllIdBox.Value = _datFile.TechTreeNew.DesignData.FirstLineBaseDllId;
+			_ageLabelSecondLineDllIdBox.Value = _datFile.TechTreeNew.DesignData.SecondLineDllId;
+			_ageLabelSecondLineIncrementBox.Checked = _datFile.TechTreeNew.DesignData.IncrementSecondLineDllId;
+
 			// Updating finished
 			_updating = false;
 
@@ -171,7 +176,7 @@ namespace AoETechTreeTool
 			//catch(Exception ex)
 			{
 				// Message
-			//	MessageBox.Show("Error importing tech tree design: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+				//	MessageBox.Show("Error importing tech tree design: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
 				return;
 			}
 		}
@@ -442,15 +447,15 @@ namespace AoETechTreeTool
 			_datFile.TechTreeNew.DesignData.ResolutionData.Remove((int)_resolutionListBox.SelectedItem);
 			_resolutionListBox.Items.Remove(_resolutionListBox.SelectedItem);
 			_resolutionSettingsGrid.SelectedObject = _datFile.TechTreeNew.DesignData.ResolutionData[(int)_resolutionListBox.SelectedItem];
-        }
+		}
 
-        private void DesignForm_FormClosing(object sender, FormClosingEventArgs e)
-        {
-            // Call resolution grid leave event handler for saving changes
-            _resolutionSettingsGrid_Leave(sender, e);
-        }
+		private void DesignForm_FormClosing(object sender, FormClosingEventArgs e)
+		{
+			// Call resolution grid leave event handler for saving changes
+			_resolutionSettingsGrid_Leave(sender, e);
+		}
 
-        private void _resolutionSettingsGrid_PropertyValueChanged(object sender, PropertyValueChangedEventArgs e)
+		private void _resolutionSettingsGrid_PropertyValueChanged(object sender, PropertyValueChangedEventArgs e)
 		{
 			// Call leave event handler for saving changes
 			_resolutionSettingsGrid_Leave(sender, e);
@@ -576,6 +581,24 @@ namespace AoETechTreeTool
 			// Delete element
 			_datFile.TechTreeNew.DesignData.NodeTypes.Remove((TechTreeNew.TechTreeDesign.NodeType)_nodeTypesListBox.SelectedItem);
 			_nodeTypesListBox.Items.Remove(_nodeTypesListBox.SelectedItem);
+		}
+
+		private void _ageLabelFirstLineDllIdBox_ValueChanged(object sender, EventArgs e)
+		{
+			// Save value
+			_datFile.TechTreeNew.DesignData.FirstLineBaseDllId = (int)_ageLabelFirstLineDllIdBox.Value;
+		}
+
+		private void _ageLabelSecondLineDllIdBox_ValueChanged(object sender, EventArgs e)
+		{
+			// Save value
+			_datFile.TechTreeNew.DesignData.SecondLineDllId = (int)_ageLabelSecondLineDllIdBox.Value;
+		}
+
+		private void _ageLabelSecondLineIncrementBox_CheckedChanged(object sender, EventArgs e)
+		{
+			// Save value
+			_datFile.TechTreeNew.DesignData.IncrementSecondLineDllId = _ageLabelSecondLineIncrementBox.Checked;
 		}
 
 		#endregion
@@ -714,6 +737,6 @@ namespace AoETechTreeTool
 			}
 		}
 
-        #endregion
-    }
+		#endregion
+	}
 }
